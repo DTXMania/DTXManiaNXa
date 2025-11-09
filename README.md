@@ -12,6 +12,11 @@ DTXManiaNXa は、[DTXManiaNX](https://github.com/limyz/DTXmaniaNX) から派生し、い
 |DTX2WAV|対応|未対応
 |Discord Rich Presence|?|未対応|
 
+# DirectX ユーザランタイムについて
+
+DTXManiaNXa は Direct3D9 を使用しています。
+もし [DirectX エンドユーザランタイム](https://www.microsoft.com/ja-jp/download/details.aspx?id=35)をまだインストールしたことがなければ、先にインストールしてください。
+
 # リリースファイルの作成手順
 
 1. DTXManiaNXaプロジェクトを発行する。
