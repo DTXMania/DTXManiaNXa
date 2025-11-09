@@ -1,4 +1,4 @@
-# DTXManiaNXa とは
+# DTXManiaNXa
 
 DTXManiaNXa は、[DTXManiaNX](https://github.com/limyz/DTXmaniaNX) から派生し、いくつかの改修を加えたものです。
 
@@ -12,10 +12,10 @@ DTXManiaNXa は、[DTXManiaNX](https://github.com/limyz/DTXmaniaNX) から派生し、い
 |DTX2WAV|対応|未対応
 |Discord Rich Presence|?|未対応|
 
-# 実行時リソースについて
+# リリースファイルの作成手順
 
-DTXManiaNXa のビルドでは、実行時に必要なリソース（Systemフォルダやネイティブdll）も
-出力フォルダにコピーする必要があります。
-そのため、ビルド後イベントで ``DTXManiaNXa/RuntimeResources/*`` を出力フォルダに ``xcopy`` するようにしています。
-（ファイルのプロパティでビルド時にコピーするように設定できますが、すべてのファイルに対して行なう必要があり、面倒かつ漏れやすいので却下。）
-
+1. DTXManiaNXaプロジェクトを発行する。
+1. DTXCreatorNXaプロジェクトを発行する。
+1. DTXCreatorNXaの発行内容（exeが1つだけ）を、DTXManiaNXaの発行先フォルダにコピー。
+1. DTXManiaNXaの発行先フォルダを「DTXManiaNXa」に改名し、そのフォルダを zip 化。
+1. zip のファイル名を変更（例：``DTXManiaNXa-1.0.0.zip``）。
