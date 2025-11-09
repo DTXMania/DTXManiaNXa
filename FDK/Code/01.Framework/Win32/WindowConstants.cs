@@ -19,8 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
-
 namespace SampleFramework
 {
     static class WindowConstants
@@ -29,7 +27,7 @@ namespace SampleFramework
         public const int WM_SYSCOMMAND = 0x112;
         public const int WM_ACTIVATEAPP = 0x001C;
         public const int WM_POWERBROADCAST = 0x0218;
-		public const int WM_COPYDATA = 0x004A;
+        public const int WM_COPYDATA = 0x004A;
 
         public const int SC_SCREENSAVE = 0xF140;
         public const int SC_MONITORPOWER = 0xF170;
@@ -37,12 +35,12 @@ namespace SampleFramework
         public const int VK_LWIN = 0x5B;
         public const int VK_RWIN = 0x5C;
 
-        public static readonly IntPtr SIZE_MINIMIZED = new IntPtr(1);
-        public static readonly IntPtr SIZE_MAXIMIZED = new IntPtr(2);
-        public static readonly IntPtr SIZE_RESTORED = new IntPtr(0);
+        public static readonly IntPtr SIZE_MINIMIZED = new IntPtr( 1 );
+        public static readonly IntPtr SIZE_MAXIMIZED = new IntPtr( 2 );
+        public static readonly IntPtr SIZE_RESTORED = new IntPtr( 0 );
 
-        public static readonly IntPtr PBT_APMQUERYSUSPEND = new IntPtr(0x0000);
-        public static readonly IntPtr PBT_APMRESUMESUSPEND = new IntPtr(0x0007);
+        public static readonly IntPtr PBT_APMQUERYSUSPEND = new IntPtr( 0x0000 );
+        public static readonly IntPtr PBT_APMRESUMESUSPEND = new IntPtr( 0x0007 );
 
         public const int WPF_RESTORETOMAXIMIZED = 2;
 
@@ -72,6 +70,6 @@ namespace SampleFramework
 
         public const int MONITOR_DEFAULTTOPRIMARY = 1;
 
-		public const int WM_USER = 0x400;
-	}
+        public const int WM_USER = 0x400;
+    }
 }

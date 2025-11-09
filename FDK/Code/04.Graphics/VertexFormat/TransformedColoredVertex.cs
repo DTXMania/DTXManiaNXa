@@ -20,22 +20,23 @@
 * THE SOFTWARE.
 */
 
-using System;
-using System.Globalization;
 using System.Runtime.InteropServices;
 
 using SharpDX;
 
-namespace FDK {
+namespace FDK
+{
     /// <summary>
     /// Represents a vertex with a pre-transformed position and a color.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TransformedColoredVertex : IEquatable<TransformedColoredVertex> {
+    [StructLayout( LayoutKind.Sequential )]
+    public struct TransformedColoredVertex : IEquatable<TransformedColoredVertex>
+    {
         /// <summary>
         /// Gets or sets the pre-transformed position of the vertex.
         /// </summary>
-        public Vector4 Position {
+        public Vector4 Position
+        {
             get;
             set;
         }
@@ -43,7 +44,8 @@ namespace FDK {
         /// <summary>
         /// Gets or sets the color of the vertex.
         /// </summary>
-        public int Color {
+        public int Color
+        {
             get;
             set;
         }
@@ -53,8 +55,9 @@ namespace FDK {
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="color">The color.</param>
-        public TransformedColoredVertex(Vector4 position, int color)
-            : this() {
+        public TransformedColoredVertex( Vector4 position, int color )
+            : this()
+        {
             Position = position;
             Color = color;
         }
@@ -65,8 +68,9 @@ namespace FDK {
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(TransformedColoredVertex left, TransformedColoredVertex right) {
-            return left.Equals(right);
+        public static bool operator ==( TransformedColoredVertex left, TransformedColoredVertex right )
+        {
+            return left.Equals( right );
         }
 
         /// <summary>
@@ -75,8 +79,9 @@ namespace FDK {
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(TransformedColoredVertex left, TransformedColoredVertex right) {
-            return !(left == right);
+        public static bool operator !=( TransformedColoredVertex left, TransformedColoredVertex right )
+        {
+            return !( left == right );
         }
 
         /// <summary>
@@ -85,7 +90,8 @@ namespace FDK {
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return Position.GetHashCode() + Color.GetHashCode();
         }
 
@@ -96,14 +102,15 @@ namespace FDK {
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj) {
-            if (obj == null)
+        public override bool Equals( object obj )
+        {
+            if( obj == null )
                 return false;
 
-            if (GetType() != obj.GetType())
+            if( GetType() != obj.GetType() )
                 return false;
 
-            return Equals((TransformedColoredVertex)obj);
+            return Equals( (TransformedColoredVertex) obj );
         }
 
         /// <summary>
@@ -113,8 +120,9 @@ namespace FDK {
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(TransformedColoredVertex other) {
-            return (Position == other.Position && Color == other.Color);
+        public bool Equals( TransformedColoredVertex other )
+        {
+            return ( Position == other.Position && Color == other.Color );
         }
     }
 }

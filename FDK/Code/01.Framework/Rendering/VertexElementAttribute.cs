@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using SharpDX.Direct3D9;
 
 namespace SampleFramework
@@ -27,7 +26,7 @@ namespace SampleFramework
     /// <summary>
     /// Indicates that the target code element is part of a vertex declaration.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    [AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
     public sealed class VertexElementAttribute : Attribute
     {
         /// <summary>
@@ -85,7 +84,7 @@ namespace SampleFramework
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="usage">The vertex element usage.</param>
-        public VertexElementAttribute(DeclarationType type, DeclarationUsage usage)
+        public VertexElementAttribute( DeclarationType type, DeclarationUsage usage )
         {
             Type = type;
             Usage = usage;

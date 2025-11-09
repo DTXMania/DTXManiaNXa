@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using SharpDX;
@@ -30,43 +29,43 @@ namespace SampleFramework
     /// <summary>
     /// Represents a single transformed, colored, and textured vertex.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     public struct TransformedColoredTexturedVertex : IEquatable<TransformedColoredTexturedVertex>
     {
-		private Vector4 m_Position;
+        private Vector4 m_Position;
         /// <summary>
         /// Gets or sets the transformed position of the vertex.
         /// </summary>
         /// <value>The transformed position of the vertex.</value>
-        [VertexElement(DeclarationType.Float4, DeclarationUsage.PositionTransformed)]
+        [VertexElement( DeclarationType.Float4, DeclarationUsage.PositionTransformed )]
         public Vector4 Position
         {
-			get { return m_Position; }
-			set { m_Position = value; }
+            get { return m_Position; }
+            set { m_Position = value; }
         }
 
-		private int m_Color;
+        private int m_Color;
         /// <summary>
         /// Gets or sets the color of the vertex.
         /// </summary>
         /// <value>The color of the vertex.</value>
-        [VertexElement(DeclarationType.Color, DeclarationUsage.Color)]
+        [VertexElement( DeclarationType.Color, DeclarationUsage.Color )]
         public int Color
         {
-			get { return m_Color; }
-			set { m_Color = value; }
+            get { return m_Color; }
+            set { m_Color = value; }
         }
 
-		private Vector2 m_TextureCoordinates;
+        private Vector2 m_TextureCoordinates;
         /// <summary>
         /// Gets or sets the texture coordinates.
         /// </summary>
         /// <value>The texture coordinates.</value>
-        [VertexElement(DeclarationType.Float2, DeclarationUsage.TextureCoordinate)]
+        [VertexElement( DeclarationType.Float2, DeclarationUsage.TextureCoordinate )]
         public Vector2 TextureCoordinates
         {
-			get { return m_TextureCoordinates; }
-			set { m_TextureCoordinates = value; }
+            get { return m_TextureCoordinates; }
+            set { m_TextureCoordinates = value; }
         }
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace SampleFramework
         /// <value>The size in bytes.</value>
         public static int SizeInBytes
         {
-            get { return Marshal.SizeOf(typeof(TransformedColoredTexturedVertex)); }
+            get { return Marshal.SizeOf( typeof( TransformedColoredTexturedVertex ) ); }
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace SampleFramework
         /// <param name="position">The position.</param>
         /// <param name="color">The color.</param>
         /// <param name="textureCoordinates">The texture coordinates.</param>
-        public TransformedColoredTexturedVertex(Vector4 position, int color, Vector2 textureCoordinates)
+        public TransformedColoredTexturedVertex( Vector4 position, int color, Vector2 textureCoordinates )
             : this()
         {
             Position = position;
@@ -107,9 +106,9 @@ namespace SampleFramework
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(TransformedColoredTexturedVertex left, TransformedColoredTexturedVertex right)
+        public static bool operator ==( TransformedColoredTexturedVertex left, TransformedColoredTexturedVertex right )
         {
-            return left.Equals(right);
+            return left.Equals( right );
         }
 
         /// <summary>
@@ -118,9 +117,9 @@ namespace SampleFramework
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(TransformedColoredTexturedVertex left, TransformedColoredTexturedVertex right)
+        public static bool operator !=( TransformedColoredTexturedVertex left, TransformedColoredTexturedVertex right )
         {
-            return !(left == right);
+            return !( left == right );
         }
 
         /// <summary>
@@ -141,15 +140,15 @@ namespace SampleFramework
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals( object obj )
         {
-            if (obj == null)
+            if( obj == null )
                 return false;
 
-            if (GetType() != obj.GetType())
+            if( GetType() != obj.GetType() )
                 return false;
 
-            return Equals((TransformedColoredTexturedVertex)obj);
+            return Equals( (TransformedColoredTexturedVertex) obj );
         }
 
         /// <summary>
@@ -159,9 +158,9 @@ namespace SampleFramework
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(TransformedColoredTexturedVertex other)
+        public bool Equals( TransformedColoredTexturedVertex other )
         {
-            return (Position == other.Position && Color == other.Color && TextureCoordinates == other.TextureCoordinates);
+            return ( Position == other.Position && Color == other.Color && TextureCoordinates == other.TextureCoordinates );
         }
 
         /// <summary>
@@ -172,7 +171,7 @@ namespace SampleFramework
         /// </returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "{0} ({1}, {2})", Position.ToString(), System.Drawing.Color.FromArgb(Color).ToString(), TextureCoordinates.ToString());
+            return string.Format( CultureInfo.CurrentCulture, "{0} ({1}, {2})", Position.ToString(), System.Drawing.Color.FromArgb( Color ).ToString(), TextureCoordinates.ToString() );
         }
     }
 }

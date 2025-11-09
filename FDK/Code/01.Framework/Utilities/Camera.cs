@@ -48,7 +48,7 @@ namespace SampleFramework
             get { return location; }
             set
             {
-                if (location == value)
+                if( location == value )
                     return;
 
                 location = value;
@@ -65,7 +65,7 @@ namespace SampleFramework
             get { return target; }
             set
             {
-                if (target == value)
+                if( target == value )
                     return;
 
                 target = value;
@@ -82,7 +82,7 @@ namespace SampleFramework
             get { return fieldOfView; }
             set
             {
-                if (fieldOfView == value)
+                if( fieldOfView == value )
                     return;
 
                 fieldOfView = value;
@@ -99,7 +99,7 @@ namespace SampleFramework
             get { return aspectRatio; }
             set
             {
-                if (aspectRatio == value)
+                if( aspectRatio == value )
                     return;
 
                 aspectRatio = value;
@@ -116,7 +116,7 @@ namespace SampleFramework
             get { return nearPlane; }
             set
             {
-                if (nearPlane == value)
+                if( nearPlane == value )
                     return;
 
                 nearPlane = value;
@@ -133,7 +133,7 @@ namespace SampleFramework
             get { return farPlane; }
             set
             {
-                if (farPlane == value)
+                if( farPlane == value )
                     return;
 
                 farPlane = value;
@@ -149,7 +149,7 @@ namespace SampleFramework
         {
             get
             {
-                if (viewDirty)
+                if( viewDirty )
                     RebuildViewMatrix();
                 return viewMatrix;
             }
@@ -163,7 +163,7 @@ namespace SampleFramework
         {
             get
             {
-                if (projectionDirty)
+                if( projectionDirty )
                     RebuildProjectionMatrix();
                 return projectionMatrix;
             }
@@ -181,7 +181,7 @@ namespace SampleFramework
         /// </summary>
         protected virtual void RebuildViewMatrix()
         {
-            viewMatrix = Matrix.LookAtLH(Location, Target, Vector3.UnitY);
+            viewMatrix = Matrix.LookAtLH( Location, Target, Vector3.UnitY );
             viewDirty = false;
         }
 
@@ -190,7 +190,7 @@ namespace SampleFramework
         /// </summary>
         protected virtual void RebuildProjectionMatrix()
         {
-            projectionMatrix = Matrix.PerspectiveFovLH(FieldOfView, AspectRatio, NearPlane, FarPlane);
+            projectionMatrix = Matrix.PerspectiveFovLH( FieldOfView, AspectRatio, NearPlane, FarPlane );
             projectionDirty = false;
         }
     }

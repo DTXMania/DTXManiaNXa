@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using SharpDX.Direct3D9;
 namespace SampleFramework
 {
@@ -207,7 +206,7 @@ namespace SampleFramework
             result.AdapterOrdinal = AdapterOrdinal;
             result.Multithreaded = Multithreaded;
 
-            if (Direct3D9 != null)
+            if( Direct3D9 != null )
                 result.Direct3D9 = Direct3D9.Clone();
 
             return result;
@@ -229,45 +228,45 @@ namespace SampleFramework
         /// </summary>
         /// <param name="settings">The desired settings.</param>
         /// <returns>The best valid device settings matching the input settings.</returns>
-		public static DeviceSettings FindValidSettings(DeviceSettings settings)
+		public static DeviceSettings FindValidSettings( DeviceSettings settings )
         {
             try
             {
                 GraphicsDeviceManager.EnsureD3D9();
             }
-            catch (Exception e)
+            catch( Exception e )
             {
-                throw new NoCompatibleDevicesException("Could not initialize Direct3D9.", e);
+                throw new NoCompatibleDevicesException( "Could not initialize Direct3D9.", e );
             }
 
-            if (!Enumeration9.HasEnumerated)
+            if( !Enumeration9.HasEnumerated )
                 Enumeration9.Enumerate();
 
             DeviceSettings newSettings = settings.Clone();
-            Direct3D9Settings d3d9 = FindValidD3D9Settings(settings);
+            Direct3D9Settings d3d9 = FindValidD3D9Settings( settings );
             newSettings.Direct3D9 = d3d9;
             return newSettings;
         }
 
-        static Direct3D9Settings FindValidD3D9Settings(DeviceSettings settings)
+        static Direct3D9Settings FindValidD3D9Settings( DeviceSettings settings )
         {
-            Direct3D9Settings optimal = Direct3D9Settings.BuildOptimalSettings(settings);
+            Direct3D9Settings optimal = Direct3D9Settings.BuildOptimalSettings( settings );
 
             SettingsCombo9 bestCombo = null;
             float bestRanking = -1.0f;
 
-            foreach (AdapterInfo9 adapterInfo in Enumeration9.Adapters)
+            foreach( AdapterInfo9 adapterInfo in Enumeration9.Adapters )
             {
-                DisplayMode desktopMode = GraphicsDeviceManager.Direct3D9Object.GetAdapterDisplayMode(adapterInfo.AdapterOrdinal);
-                foreach (DeviceInfo9 deviceInfo in adapterInfo.Devices)
+                DisplayMode desktopMode = GraphicsDeviceManager.Direct3D9Object.GetAdapterDisplayMode( adapterInfo.AdapterOrdinal );
+                foreach( DeviceInfo9 deviceInfo in adapterInfo.Devices )
                 {
-                    foreach (SettingsCombo9 combo in deviceInfo.DeviceSettings)
+                    foreach( SettingsCombo9 combo in deviceInfo.DeviceSettings )
                     {
-                        if (combo.Windowed && combo.AdapterFormat != desktopMode.Format)
+                        if( combo.Windowed && combo.AdapterFormat != desktopMode.Format )
                             continue;
 
-                        float ranking = Direct3D9Settings.RankSettingsCombo(combo, optimal, desktopMode);
-                        if (ranking > bestRanking)
+                        float ranking = Direct3D9Settings.RankSettingsCombo( combo, optimal, desktopMode );
+                        if( ranking > bestRanking )
                         {
                             bestCombo = combo;
                             bestRanking = ranking;
@@ -276,10 +275,10 @@ namespace SampleFramework
                 }
             }
 
-            if (bestCombo == null)
-                throw new NoCompatibleDevicesException("No compatible Direct3D9 devices found.");
+            if( bestCombo == null )
+                throw new NoCompatibleDevicesException( "No compatible Direct3D9 devices found." );
 
-            return Direct3D9Settings.BuildValidSettings(bestCombo, optimal);
+            return Direct3D9Settings.BuildValidSettings( bestCombo, optimal );
         }
     }
 }

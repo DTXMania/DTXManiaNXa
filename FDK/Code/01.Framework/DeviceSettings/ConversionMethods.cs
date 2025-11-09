@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using SharpDX;
 using SharpDX.Direct3D9;
 using DXGI = SharpDX.DXGI;
 
@@ -27,9 +26,9 @@ namespace SampleFramework
 {
     static class ConversionMethods
     {
-        public static int GetDepthBits(Format format)
+        public static int GetDepthBits( Format format )
         {
-            switch (format)
+            switch( format )
             {
                 case Format.D32SingleLockable:
                 case Format.D32:
@@ -53,9 +52,9 @@ namespace SampleFramework
             }
         }
 
-        public static int GetStencilBits(Format format)
+        public static int GetStencilBits( Format format )
         {
-            switch (format)
+            switch( format )
             {
                 case Format.D15S1:
                     return 1;
@@ -72,9 +71,9 @@ namespace SampleFramework
             }
         }
 
-        public static int GetColorBits(Format format)
+        public static int GetColorBits( Format format )
         {
-            switch (format)
+            switch( format )
             {
                 case Format.R8G8B8:
                 case Format.A8R8G8B8:
@@ -107,9 +106,9 @@ namespace SampleFramework
             }
         }
 
-        public static int GetColorBits(DXGI.Format format)
+        public static int GetColorBits( DXGI.Format format )
         {
-            switch (format)
+            switch( format )
             {
                 case DXGI.Format.R32G32B32A32_Float:
                 case DXGI.Format.R32G32B32A32_SInt:
@@ -151,14 +150,14 @@ namespace SampleFramework
             }
         }
 
-        public static MultisampleType ToDirect3D9(int type)
+        public static MultisampleType ToDirect3D9( int type )
         {
-            return (MultisampleType)type;
+            return (MultisampleType) type;
         }
 
-        public static Format ToDirect3D9(DXGI.Format format)
+        public static Format ToDirect3D9( DXGI.Format format )
         {
-            switch (format)
+            switch( format )
             {
                 case DXGI.Format.R8G8B8A8_UNorm:
                     return Format.A8R8G8B8;
@@ -193,10 +192,10 @@ namespace SampleFramework
             return Format.Unknown;
         }
 
-        public static float ToFloat(DXGI.Rational rational)
+        public static float ToFloat( DXGI.Rational rational )
         {
             float denom = 1;
-            if (rational.Denominator != 0)
+            if( rational.Denominator != 0 )
                 denom = rational.Denominator;
             return rational.Numerator / denom;
         }

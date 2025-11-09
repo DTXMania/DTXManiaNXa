@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using System.Runtime.Serialization;
 
 namespace SampleFramework
@@ -41,8 +40,8 @@ namespace SampleFramework
         /// Initializes a new instance of the <see cref="NoCompatibleDevicesException"/> class.
         /// </summary>
         /// <param name="message">The message.</param>
-        public NoCompatibleDevicesException(string message)
-            : base(message)
+        public NoCompatibleDevicesException( string message )
+            : base( message )
         {
         }
 
@@ -51,8 +50,8 @@ namespace SampleFramework
         /// </summary>
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
-        public NoCompatibleDevicesException(string message, Exception innerException)
-            : base(message, innerException)
+        public NoCompatibleDevicesException( string message, Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -63,8 +62,8 @@ namespace SampleFramework
         /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
         /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        protected NoCompatibleDevicesException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
+        protected NoCompatibleDevicesException( SerializationInfo info, StreamingContext context )
+            : base( info, context )
         {
         }
     }

@@ -20,22 +20,23 @@
 * THE SOFTWARE.
 */
 
-using System;
-using System.Globalization;
 using System.Runtime.InteropServices;
 
 using SharpDX;
 
-namespace FDK {
+namespace FDK
+{
     /// <summary>
     /// Represents a vertex with a position and a texture coordinate.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TexturedVertex : IEquatable<TexturedVertex> {
+    [StructLayout( LayoutKind.Sequential )]
+    public struct TexturedVertex : IEquatable<TexturedVertex>
+    {
         /// <summary>
         /// Gets or sets the position of the vertex.
         /// </summary>
-        public Vector3 Position {
+        public Vector3 Position
+        {
             get;
             set;
         }
@@ -43,7 +44,8 @@ namespace FDK {
         /// <summary>
         /// Gets or sets the texture coordinate for the vertex.
         /// </summary>
-        public Vector2 TextureCoordinate {
+        public Vector2 TextureCoordinate
+        {
             get;
             set;
         }
@@ -53,8 +55,9 @@ namespace FDK {
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="color">The color.</param>
-        public TexturedVertex(Vector3 position, Vector2 textureCoordinate)
-            : this() {
+        public TexturedVertex( Vector3 position, Vector2 textureCoordinate )
+            : this()
+        {
             Position = position;
             TextureCoordinate = textureCoordinate;
         }
@@ -65,8 +68,9 @@ namespace FDK {
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(TexturedVertex left, TexturedVertex right) {
-            return left.Equals(right);
+        public static bool operator ==( TexturedVertex left, TexturedVertex right )
+        {
+            return left.Equals( right );
         }
 
         /// <summary>
@@ -75,8 +79,9 @@ namespace FDK {
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(TexturedVertex left, TexturedVertex right) {
-            return !(left == right);
+        public static bool operator !=( TexturedVertex left, TexturedVertex right )
+        {
+            return !( left == right );
         }
 
         /// <summary>
@@ -85,7 +90,8 @@ namespace FDK {
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return Position.GetHashCode() + TextureCoordinate.GetHashCode();
         }
 
@@ -96,14 +102,15 @@ namespace FDK {
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj) {
-            if (obj == null)
+        public override bool Equals( object obj )
+        {
+            if( obj == null )
                 return false;
 
-            if (GetType() != obj.GetType())
+            if( GetType() != obj.GetType() )
                 return false;
 
-            return Equals((TexturedVertex)obj);
+            return Equals( (TexturedVertex) obj );
         }
 
         /// <summary>
@@ -113,8 +120,9 @@ namespace FDK {
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(TexturedVertex other) {
-            return (Position == other.Position && TextureCoordinate == other.TextureCoordinate);
+        public bool Equals( TexturedVertex other )
+        {
+            return ( Position == other.Position && TextureCoordinate == other.TextureCoordinate );
         }
     }
 }

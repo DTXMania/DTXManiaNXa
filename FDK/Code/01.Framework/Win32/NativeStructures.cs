@@ -19,13 +19,11 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace SampleFramework
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     struct NativeRectangle
     {
         public int left;
@@ -34,7 +32,7 @@ namespace SampleFramework
         public int bottom;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     struct NativeMessage
     {
         public IntPtr hWnd;
@@ -45,7 +43,7 @@ namespace SampleFramework
         public Point p;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     struct WINDOWPLACEMENT
     {
         public int length;
@@ -57,11 +55,11 @@ namespace SampleFramework
 
         public static int Length
         {
-            get { return Marshal.SizeOf(typeof(WINDOWPLACEMENT)); }
+            get { return Marshal.SizeOf( typeof( WINDOWPLACEMENT ) ); }
         }
     }
     #region #28821 2014.1.23 yyagi add: 外部からの文字列メッセージ送受信 定数定義
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     public struct COPYDATASTRUCT
     {
         public IntPtr dwData;

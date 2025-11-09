@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using SharpDX;
@@ -30,14 +29,14 @@ namespace SampleFramework
     /// <summary>
     /// Represents a single transformed and colored vertex.
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     public struct TransformedColoredVertex : IEquatable<TransformedColoredVertex>
     {
         /// <summary>
         /// Gets or sets the transformed position of the vertex.
         /// </summary>
         /// <value>The transformed position of the vertex.</value>
-        [VertexElement(DeclarationType.Float4, DeclarationUsage.PositionTransformed)]
+        [VertexElement( DeclarationType.Float4, DeclarationUsage.PositionTransformed )]
         public Vector4 Position
         {
             get;
@@ -48,7 +47,7 @@ namespace SampleFramework
         /// Gets or sets the color of the vertex.
         /// </summary>
         /// <value>The color of the vertex.</value>
-        [VertexElement(DeclarationType.Color, DeclarationUsage.Color)]
+        [VertexElement( DeclarationType.Color, DeclarationUsage.Color )]
         public int Color
         {
             get;
@@ -61,7 +60,7 @@ namespace SampleFramework
         /// <value>The size in bytes.</value>
         public static int SizeInBytes
         {
-            get { return Marshal.SizeOf(typeof(TransformedColoredVertex)); }
+            get { return Marshal.SizeOf( typeof( TransformedColoredVertex ) ); }
         }
 
         /// <summary>
@@ -78,7 +77,7 @@ namespace SampleFramework
         /// </summary>
         /// <param name="position">The position.</param>
         /// <param name="color">The color.</param>
-        public TransformedColoredVertex(Vector4 position, int color)
+        public TransformedColoredVertex( Vector4 position, int color )
             : this()
         {
             Position = position;
@@ -91,9 +90,9 @@ namespace SampleFramework
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(TransformedColoredVertex left, TransformedColoredVertex right)
+        public static bool operator ==( TransformedColoredVertex left, TransformedColoredVertex right )
         {
-            return left.Equals(right);
+            return left.Equals( right );
         }
 
         /// <summary>
@@ -102,9 +101,9 @@ namespace SampleFramework
         /// <param name="left">The left side of the operator.</param>
         /// <param name="right">The right side of the operator.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator !=(TransformedColoredVertex left, TransformedColoredVertex right)
+        public static bool operator !=( TransformedColoredVertex left, TransformedColoredVertex right )
         {
-            return !(left == right);
+            return !( left == right );
         }
 
         /// <summary>
@@ -125,15 +124,15 @@ namespace SampleFramework
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals( object obj )
         {
-            if (obj == null)
+            if( obj == null )
                 return false;
 
-            if (GetType() != obj.GetType())
+            if( GetType() != obj.GetType() )
                 return false;
 
-            return Equals((TransformedColoredVertex)obj);
+            return Equals( (TransformedColoredVertex) obj );
         }
 
         /// <summary>
@@ -143,9 +142,9 @@ namespace SampleFramework
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(TransformedColoredVertex other)
+        public bool Equals( TransformedColoredVertex other )
         {
-            return (Position == other.Position && Color == other.Color);
+            return ( Position == other.Position && Color == other.Color );
         }
 
         /// <summary>
@@ -156,7 +155,7 @@ namespace SampleFramework
         /// </returns>
         public override string ToString()
         {
-            return string.Format(CultureInfo.CurrentCulture, "{0} ({1})", Position.ToString(), System.Drawing.Color.FromArgb(Color).ToString());
+            return string.Format( CultureInfo.CurrentCulture, "{0} ({1})", Position.ToString(), System.Drawing.Color.FromArgb( Color ).ToString() );
         }
     }
 }

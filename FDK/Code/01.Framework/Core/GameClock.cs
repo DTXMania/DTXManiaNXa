@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System;
 using System.Diagnostics;
 
 namespace SampleFramework
@@ -73,7 +72,7 @@ namespace SampleFramework
         public void Suspend()
         {
             suspendCount++;
-            if (suspendCount == 1)
+            if( suspendCount == 1 )
                 suspendStartTime = Stopwatch.GetTimestamp();
         }
 
@@ -83,7 +82,7 @@ namespace SampleFramework
         public void Resume()
         {
             suspendCount--;
-            if (suspendCount <= 0)
+            if( suspendCount <= 0 )
             {
                 timeLostToSuspension += Stopwatch.GetTimestamp() - suspendStartTime;
                 suspendStartTime = 0;
@@ -94,7 +93,7 @@ namespace SampleFramework
         {
             long counter = Stopwatch.GetTimestamp();
 
-            if (!lastRealTimeValid)
+            if( !lastRealTimeValid )
             {
                 lastRealTime = counter;
                 lastRealTimeValid = true;
@@ -102,9 +101,9 @@ namespace SampleFramework
 
             try
             {
-                currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
+                currentTimeOffset = CounterToTimeSpan( counter - baseRealTime );
             }
-            catch (OverflowException)
+            catch( OverflowException )
             {
                 // update the base value and try again to adjust for overflow
                 currentTimeBase += currentTimeOffset;
@@ -113,9 +112,9 @@ namespace SampleFramework
                 try
                 {
                     // get the current offset
-                    currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
+                    currentTimeOffset = CounterToTimeSpan( counter - baseRealTime );
                 }
-                catch (OverflowException)
+                catch( OverflowException )
                 {
                     // account for overflow
                     baseRealTime = counter;
@@ -125,19 +124,19 @@ namespace SampleFramework
 
             try
             {
-                ElapsedTime = CounterToTimeSpan(counter - lastRealTime);
+                ElapsedTime = CounterToTimeSpan( counter - lastRealTime );
             }
-            catch (OverflowException)
+            catch( OverflowException )
             {
                 ElapsedTime = TimeSpan.Zero;
             }
 
             try
             {
-                ElapsedAdjustedTime = CounterToTimeSpan(counter - (lastRealTime + timeLostToSuspension));
+                ElapsedAdjustedTime = CounterToTimeSpan( counter - ( lastRealTime + timeLostToSuspension ) );
                 timeLostToSuspension = 0;
             }
-            catch (OverflowException)
+            catch( OverflowException )
             {
                 ElapsedAdjustedTime = TimeSpan.Zero;
             }
@@ -145,9 +144,9 @@ namespace SampleFramework
             lastRealTime = counter;
         }
 
-        static TimeSpan CounterToTimeSpan(long delta)
+        static TimeSpan CounterToTimeSpan( long delta )
         {
-            return TimeSpan.FromTicks((delta * 10000000) / Frequency);
+            return TimeSpan.FromTicks( ( delta * 10000000 ) / Frequency );
         }
     }
 }

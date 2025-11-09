@@ -1,69 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Diagnostics;
-
-namespace FDK
+﻿namespace FDK
 {
-	public class CSoundTimer : CTimerBase
-	{
-		public override long nSystemTimeMs
-		{
-			get
-			{
-				if( this.Device.e出力デバイス == ESoundDeviceType.ExclusiveWASAPI || 
-					this.Device.e出力デバイス == ESoundDeviceType.SharedWASAPI ||
-					this.Device.e出力デバイス == ESoundDeviceType.ASIO )
-				{
-					// BASS 系の ISoundDevice.n経過時間ms はオーディオバッファの更新間隔ずつでしか更新されないため、単にこれを返すだけではとびとびの値になる。
-					// そこで、更新間隔の最中に呼ばれた場合は、システムタイマを使って補間する。
-					// この場合の経過時間との誤差は更新間隔以内に収まるので問題ないと判断する。
-					// ただし、ASIOの場合は、転送byte数から時間算出しているため、ASIOの音声合成処理の負荷が大きすぎる場合(処理時間が実時間を超えている場合)は
-					// 動作がおかしくなる。(具体的には、ここで返すタイマー値の逆行が発生し、スクロールが巻き戻る)
-					// この場合の対策は、ASIOのバッファ量を増やして、ASIOの音声合成処理の負荷を下げること。
+    public class CSoundTimer : CTimerBase
+    {
+        public override long nSystemTimeMs
+        {
+            get
+            {
+                if( this.Device.e出力デバイス == ESoundDeviceType.ExclusiveWASAPI ||
+                    this.Device.e出力デバイス == ESoundDeviceType.SharedWASAPI ||
+                    this.Device.e出力デバイス == ESoundDeviceType.ASIO )
+                {
+                    // BASS 系の ISoundDevice.n経過時間ms はオーディオバッファの更新間隔ずつでしか更新されないため、単にこれを返すだけではとびとびの値になる。
+                    // そこで、更新間隔の最中に呼ばれた場合は、システムタイマを使って補間する。
+                    // この場合の経過時間との誤差は更新間隔以内に収まるので問題ないと判断する。
+                    // ただし、ASIOの場合は、転送byte数から時間算出しているため、ASIOの音声合成処理の負荷が大きすぎる場合(処理時間が実時間を超えている場合)は
+                    // 動作がおかしくなる。(具体的には、ここで返すタイマー値の逆行が発生し、スクロールが巻き戻る)
+                    // この場合の対策は、ASIOのバッファ量を増やして、ASIOの音声合成処理の負荷を下げること。
 
-					return this.Device.n経過時間ms
-						+ ( this.Device.tmシステムタイマ.nSystemTimeMs - this.Device.n経過時間を更新したシステム時刻ms );
-				}
-				else if( this.Device.e出力デバイス == ESoundDeviceType.DirectSound )
-				{
-					//return this.Device.n経過時間ms;		// #24820 2013.2.3 yyagi TESTCODE DirectSoundでスクロールが滑らかにならないため、
-					return ct.nSystemTimeMs;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
-				}
-				return CTimerBase.nUnused;
-			}
-		}
+                    return this.Device.n経過時間ms
+                        + ( this.Device.tmシステムタイマ.nSystemTimeMs - this.Device.n経過時間を更新したシステム時刻ms );
+                }
+                else if( this.Device.e出力デバイス == ESoundDeviceType.DirectSound )
+                {
+                    //return this.Device.n経過時間ms;		// #24820 2013.2.3 yyagi TESTCODE DirectSoundでスクロールが滑らかにならないため、
+                    return ct.nSystemTimeMs;                // 仮にCSoundTimerをCTimer相当の動作にしてみた
+                }
+                return CTimerBase.nUnused;
+            }
+        }
 
-		public CSoundTimer( ISoundDevice device )
-		{
-			this.Device = device;
+        public CSoundTimer( ISoundDevice device )
+        {
+            this.Device = device;
 
-			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
-			{
-				TimerCallback timerDelegate = new TimerCallback( SnapTimers );	// CSoundTimerをシステム時刻に変換するために、
-				timer = new Timer( timerDelegate, null, 0, 1000 );				// CSoundTimerとCTimerを両方とも走らせておき、
-				ctDInputTimer = new CTimer( CTimer.EType.MultiMedia );			// 1秒に1回時差を測定するようにしておく
-			}
-			else																// TESTCODE DirectSound時のみ、CSoundTimerでなくCTimerを使う
-			{
-			    ct = new CTimer( CTimer.EType.MultiMedia );
-			}
-		}
-	
-		private void SnapTimers(object o)	// 1秒に1回呼び出され、2つのタイマー間の現在値をそれぞれ保持する。
-		{
-			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
-			{
-				this.nDInputTimerCounter = this.ctDInputTimer.nSystemTimeMs;
-				this.nSoundTimerCounter = this.nSystemTimeMs;
-				//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
-			}
-		}
-		public long nサウンドタイマーのシステム時刻msへの変換( long nDInputのタイムスタンプ )
-		{
-			return nDInputのタイムスタンプ - this.nDInputTimerCounter + this.nSoundTimerCounter;	// Timer違いによる時差を補正する
-		}
+            if( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
+            {
+                TimerCallback timerDelegate = new TimerCallback( SnapTimers );  // CSoundTimerをシステム時刻に変換するために、
+                timer = new System.Threading.Timer( timerDelegate, null, 0, 1000 );              // CSoundTimerとCTimerを両方とも走らせておき、
+                ctDInputTimer = new CTimer( CTimer.EType.MultiMedia );          // 1秒に1回時差を測定するようにしておく
+            }
+            else                                                                // TESTCODE DirectSound時のみ、CSoundTimerでなくCTimerを使う
+            {
+                ct = new CTimer( CTimer.EType.MultiMedia );
+            }
+        }
+
+        private void SnapTimers( object o ) // 1秒に1回呼び出され、2つのタイマー間の現在値をそれぞれ保持する。
+        {
+            if( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
+            {
+                this.nDInputTimerCounter = this.ctDInputTimer.nSystemTimeMs;
+                this.nSoundTimerCounter = this.nSystemTimeMs;
+                //Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
+            }
+        }
+        public long nサウンドタイマーのシステム時刻msへの変換( long nDInputのタイムスタンプ )
+        {
+            return nDInputのタイムスタンプ - this.nDInputTimerCounter + this.nSoundTimerCounter;    // Timer違いによる時差を補正する
+        }
 
 #if false
 		// キーボードイベント(keybd_eventの引数と同様のデータ)
@@ -141,33 +135,33 @@ Debug.WriteLine( "B" );
 			}
 		}
 #endif
-		public override void Dispose()
-		{
-			// 特になし； ISoundDevice の解放は呼び出し元で行うこと。
+        public override void Dispose()
+        {
+            // 特になし； ISoundDevice の解放は呼び出し元で行うこと。
 
-			//sendinputスレッド削除
-			if ( timer != null )
-			{
-				timer.Change( System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite );
-				timer.Dispose();
-				timer = null;
-			}
-			if ( ct != null )
-			{
-				ct.tPause();
-				ct.Dispose();
-				ct = null;
-			}
-		}
+            //sendinputスレッド削除
+            if( timer != null )
+            {
+                timer.Change( System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite );
+                timer.Dispose();
+                timer = null;
+            }
+            if( ct != null )
+            {
+                ct.tPause();
+                ct.Dispose();
+                ct = null;
+            }
+        }
 
-		protected ISoundDevice Device = null;
-		//protected Thread thSendInput = null;
-		protected Thread thSnapTimers = null;
-		private CTimer ctDInputTimer = null;
-		private long nDInputTimerCounter = 0;
-		private long nSoundTimerCounter = 0;
-		Timer timer = null;
+        protected ISoundDevice Device = null;
+        //protected Thread thSendInput = null;
+        protected Thread thSnapTimers = null;
+        private CTimer ctDInputTimer = null;
+        private long nDInputTimerCounter = 0;
+        private long nSoundTimerCounter = 0;
+        System.Threading.Timer timer = null;
 
-		private CTimer ct = null;								// TESTCODE
-	}
+        private CTimer ct = null;                               // TESTCODE
+    }
 }

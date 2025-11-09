@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System.Collections.Generic;
 using System.Globalization;
 using SharpDX.Direct3D9;
 
@@ -181,23 +180,23 @@ namespace SampleFramework
         {
         }
 
-        public int Compare(DisplayMode x, DisplayMode y)
+        public int Compare( DisplayMode x, DisplayMode y )
         {
-            if (x.Width > y.Width)
+            if( x.Width > y.Width )
                 return 1;
-            if (x.Width < y.Width)
+            if( x.Width < y.Width )
                 return -1;
-            if (x.Height > y.Height)
+            if( x.Height > y.Height )
                 return 1;
-            if (x.Height < y.Height)
+            if( x.Height < y.Height )
                 return -1;
-            if (x.Format > y.Format)
+            if( x.Format > y.Format )
                 return 1;
-            if (x.Format < y.Format)
+            if( x.Format < y.Format )
                 return -1;
-            if (x.RefreshRate > y.RefreshRate)
+            if( x.RefreshRate > y.RefreshRate )
                 return 1;
-            if (x.RefreshRate < y.RefreshRate)
+            if( x.RefreshRate < y.RefreshRate )
                 return -1;
 
             return 0;
@@ -232,88 +231,88 @@ namespace SampleFramework
             Format[] allowedAdapterFormats = { Format.X8R8G8B8, Format.X1R5G5B5, Format.R5G6B5,
                 Format.A2R10G10B10 };
 
-            foreach (AdapterInformation adapter in GraphicsDeviceManager.Direct3D9Object.Adapters)		//
+            foreach( AdapterInformation adapter in GraphicsDeviceManager.Direct3D9Object.Adapters )		//
             {
                 AdapterInfo9 info = new AdapterInfo9();
                 info.AdapterOrdinal = adapter.Adapter;
                 info.Details = adapter.Details;
 
                 adapterFormats.Clear();
-                foreach (Format adapterFormat in allowedAdapterFormats)
+                foreach( Format adapterFormat in allowedAdapterFormats )
                 {
-                    foreach (DisplayMode displayMode in adapter.GetDisplayModes(adapterFormat))
+                    foreach( DisplayMode displayMode in adapter.GetDisplayModes( adapterFormat ) )
                     {
-                        if (MinimumSettings != null)
+                        if( MinimumSettings != null )
                         {
-                            if (displayMode.Width < MinimumSettings.BackBufferWidth ||
+                            if( displayMode.Width < MinimumSettings.BackBufferWidth ||
                                 displayMode.Height < MinimumSettings.BackBufferHeight ||
-                                displayMode.RefreshRate < MinimumSettings.RefreshRate)
+                                displayMode.RefreshRate < MinimumSettings.RefreshRate )
                                 continue;
                         }
 
-                        info.DisplayModes.Add(displayMode);
+                        info.DisplayModes.Add( displayMode );
 
-                        if (!adapterFormats.Contains(displayMode.Format))
-                            adapterFormats.Add(displayMode.Format);
+                        if( !adapterFormats.Contains( displayMode.Format ) )
+                            adapterFormats.Add( displayMode.Format );
                     }
                 }
 
-                if (!adapterFormats.Contains(adapter.CurrentDisplayMode.Format))
-                    adapterFormats.Add(adapter.CurrentDisplayMode.Format);
+                if( !adapterFormats.Contains( adapter.CurrentDisplayMode.Format ) )
+                    adapterFormats.Add( adapter.CurrentDisplayMode.Format );
 
-                info.DisplayModes.Sort(DisplayModeComparer9.Comparer);
+                info.DisplayModes.Sort( DisplayModeComparer9.Comparer );
 
-                EnumerateDevices(info, adapterFormats);
+                EnumerateDevices( info, adapterFormats );
 
-                if (info.Devices.Count > 0)
-                    Adapters.Add(info);
+                if( info.Devices.Count > 0 )
+                    Adapters.Add( info );
             }
 
             bool unique = true;
-            foreach (AdapterInfo9 adapter1 in Adapters)
+            foreach( AdapterInfo9 adapter1 in Adapters )
             {
-                foreach (AdapterInfo9 adapter2 in Adapters)
+                foreach( AdapterInfo9 adapter2 in Adapters )
                 {
-                    if (adapter1 == adapter2)
+                    if( adapter1 == adapter2 )
                         continue;
-                    if (adapter1.Details.Description == adapter2.Details.Description)
+                    if( adapter1.Details.Description == adapter2.Details.Description )
                     {
                         unique = false;
                         break;
                     }
                 }
 
-                if (!unique)
+                if( !unique )
                     break;
             }
 
-            foreach (AdapterInfo9 info in Adapters)
+            foreach( AdapterInfo9 info in Adapters )
             {
                 info.Description = info.Details.Description;
-                if (!unique)
-                    info.Description += " " + info.AdapterOrdinal.ToString(CultureInfo.CurrentCulture);
+                if( !unique )
+                    info.Description += " " + info.AdapterOrdinal.ToString( CultureInfo.CurrentCulture );
             }
         }
 
-        static void EnumerateDevices(AdapterInfo9 info, List<Format> adapterFormats)
+        static void EnumerateDevices( AdapterInfo9 info, List<Format> adapterFormats )
         {
             DeviceType[] deviceTypes = { DeviceType.Hardware, DeviceType.Reference };
 
-            foreach (DeviceType deviceType in deviceTypes)
+            foreach( DeviceType deviceType in deviceTypes )
             {
-                if (MinimumSettings != null && MinimumSettings.DeviceType != deviceType)
+                if( MinimumSettings != null && MinimumSettings.DeviceType != deviceType )
                     continue;
 
                 DeviceInfo9 deviceInfo = new DeviceInfo9();
                 deviceInfo.DeviceType = deviceType;
                 try
                 {
-                    deviceInfo.Capabilities = GraphicsDeviceManager.Direct3D9Object.GetDeviceCaps(info.AdapterOrdinal, deviceInfo.DeviceType);
+                    deviceInfo.Capabilities = GraphicsDeviceManager.Direct3D9Object.GetDeviceCaps( info.AdapterOrdinal, deviceInfo.DeviceType );
 
-                    EnumerateSettingsCombos(info, deviceInfo, adapterFormats);
+                    EnumerateSettingsCombos( info, deviceInfo, adapterFormats );
 
-                    if (deviceInfo.DeviceSettings.Count > 0)
-                        info.Devices.Add(deviceInfo);
+                    if( deviceInfo.DeviceSettings.Count > 0 )
+                        info.Devices.Add( deviceInfo );
                 }
                 catch
                 {
@@ -322,27 +321,27 @@ namespace SampleFramework
             }
         }
 
-        static void EnumerateSettingsCombos(AdapterInfo9 adapterInfo, DeviceInfo9 deviceInfo, List<Format> adapterFormats)
+        static void EnumerateSettingsCombos( AdapterInfo9 adapterInfo, DeviceInfo9 deviceInfo, List<Format> adapterFormats )
         {
             Format[] backBufferFormats = { Format.A8R8G8B8, Format.X8R8G8B8, Format.A2R10G10B10,
                 Format.R5G6B5, Format.A1R5G5B5, Format.X1R5G5B5 };
 
-            foreach (Format adapterFormat in adapterFormats)
+            foreach( Format adapterFormat in adapterFormats )
             {
-                foreach (Format backBufferFormat in backBufferFormats)
+                foreach( Format backBufferFormat in backBufferFormats )
                 {
-                    for (int windowed = 0; windowed < 2; windowed++)
+                    for( int windowed = 0; windowed < 2; windowed++ )
                     {
-                        if (windowed == 0 && adapterInfo.DisplayModes.Count == 0)
+                        if( windowed == 0 && adapterInfo.DisplayModes.Count == 0 )
                             continue;
 
-                        if (!GraphicsDeviceManager.Direct3D9Object.CheckDeviceType(adapterInfo.AdapterOrdinal, deviceInfo.DeviceType,
-                            adapterFormat, backBufferFormat, (windowed == 1)))
+                        if( !GraphicsDeviceManager.Direct3D9Object.CheckDeviceType( adapterInfo.AdapterOrdinal, deviceInfo.DeviceType,
+                            adapterFormat, backBufferFormat, ( windowed == 1 ) ) )
                             continue;
 
-                        if (!GraphicsDeviceManager.Direct3D9Object.CheckDeviceFormat(adapterInfo.AdapterOrdinal,
+                        if( !GraphicsDeviceManager.Direct3D9Object.CheckDeviceFormat( adapterInfo.AdapterOrdinal,
                             deviceInfo.DeviceType, adapterFormat, Usage.QueryPostPixelShaderBlending,
-                            ResourceType.Texture, backBufferFormat))
+                            ResourceType.Texture, backBufferFormat ) )
                             continue;
 
                         SettingsCombo9 combo = new SettingsCombo9();
@@ -350,55 +349,55 @@ namespace SampleFramework
                         combo.DeviceType = deviceInfo.DeviceType;
                         combo.AdapterFormat = adapterFormat;
                         combo.BackBufferFormat = backBufferFormat;
-                        combo.Windowed = (windowed == 1);
+                        combo.Windowed = ( windowed == 1 );
                         combo.AdapterInfo = adapterInfo;
                         combo.DeviceInfo = deviceInfo;
 
-                        BuildDepthStencilFormatList(combo);
-                        BuildMultisampleTypeList(combo);
+                        BuildDepthStencilFormatList( combo );
+                        BuildMultisampleTypeList( combo );
 
-                        if (combo.MultisampleTypes.Count == 0)
+                        if( combo.MultisampleTypes.Count == 0 )
                             continue;
 
-                        BuildPresentIntervalList(combo);
+                        BuildPresentIntervalList( combo );
 
-                        if (MinimumSettings != null)
+                        if( MinimumSettings != null )
                         {
-                            if (MinimumSettings.BackBufferFormat != Format.Unknown &&
-                                MinimumSettings.BackBufferFormat != backBufferFormat)
+                            if( MinimumSettings.BackBufferFormat != Format.Unknown &&
+                                MinimumSettings.BackBufferFormat != backBufferFormat )
                                 continue;
 
-                            if (MinimumSettings.DepthStencilFormat != Format.Unknown &&
-                                !combo.DepthStencilFormats.Contains(MinimumSettings.DepthStencilFormat))
+                            if( MinimumSettings.DepthStencilFormat != Format.Unknown &&
+                                !combo.DepthStencilFormats.Contains( MinimumSettings.DepthStencilFormat ) )
                                 continue;
 
-                            if (!combo.MultisampleTypes.Contains(MinimumSettings.MultisampleType))
+                            if( !combo.MultisampleTypes.Contains( MinimumSettings.MultisampleType ) )
                                 continue;
                         }
 
-                        deviceInfo.DeviceSettings.Add(combo);
+                        deviceInfo.DeviceSettings.Add( combo );
                     }
                 }
             }
         }
 
-        static void BuildDepthStencilFormatList(SettingsCombo9 combo)
+        static void BuildDepthStencilFormatList( SettingsCombo9 combo )
         {
             List<Format> possibleDepthStencilFormats = new List<Format> {
                 Format.D16,     Format.D15S1,   Format.D24X8,
                 Format.D24S8,   Format.D24X4S4, Format.D32 };
 
-            foreach (Format format in possibleDepthStencilFormats)
+            foreach( Format format in possibleDepthStencilFormats )
             {
-                if (GraphicsDeviceManager.Direct3D9Object.CheckDeviceFormat(combo.AdapterOrdinal, combo.DeviceType, combo.AdapterFormat,
-                    Usage.DepthStencil, ResourceType.Surface, format) &&
-                    GraphicsDeviceManager.Direct3D9Object.CheckDepthStencilMatch(combo.AdapterOrdinal, combo.DeviceType,
-                    combo.AdapterFormat, combo.BackBufferFormat, format))
-                    combo.DepthStencilFormats.Add(format);
+                if( GraphicsDeviceManager.Direct3D9Object.CheckDeviceFormat( combo.AdapterOrdinal, combo.DeviceType, combo.AdapterFormat,
+                    Usage.DepthStencil, ResourceType.Surface, format ) &&
+                    GraphicsDeviceManager.Direct3D9Object.CheckDepthStencilMatch( combo.AdapterOrdinal, combo.DeviceType,
+                    combo.AdapterFormat, combo.BackBufferFormat, format ) )
+                    combo.DepthStencilFormats.Add( format );
             }
         }
 
-        static void BuildMultisampleTypeList(SettingsCombo9 combo)
+        static void BuildMultisampleTypeList( SettingsCombo9 combo )
         {
             List<MultisampleType> possibleMultisampleTypes = new List<MultisampleType>() {
                 MultisampleType.None,               MultisampleType.NonMaskable,
@@ -413,18 +412,18 @@ namespace SampleFramework
             };
 
             int quality;
-            foreach (MultisampleType type in possibleMultisampleTypes)
+            foreach( MultisampleType type in possibleMultisampleTypes )
             {
-                if (GraphicsDeviceManager.Direct3D9Object.CheckDeviceMultisampleType(combo.AdapterOrdinal, combo.DeviceType,
-                    combo.AdapterFormat, combo.Windowed, type, out quality))
+                if( GraphicsDeviceManager.Direct3D9Object.CheckDeviceMultisampleType( combo.AdapterOrdinal, combo.DeviceType,
+                    combo.AdapterFormat, combo.Windowed, type, out quality ) )
                 {
-                    combo.MultisampleTypes.Add(type);
-                    combo.MultisampleQualities.Add(quality);
+                    combo.MultisampleTypes.Add( type );
+                    combo.MultisampleQualities.Add( quality );
                 }
             }
         }
 
-        static void BuildPresentIntervalList(SettingsCombo9 combo)
+        static void BuildPresentIntervalList( SettingsCombo9 combo )
         {
             List<PresentInterval> possiblePresentIntervals = new List<PresentInterval>() {
                 PresentInterval.Immediate,  PresentInterval.Default,
@@ -432,15 +431,15 @@ namespace SampleFramework
                 PresentInterval.Three,      PresentInterval.Four
             };
 
-            foreach (PresentInterval interval in possiblePresentIntervals)
+            foreach( PresentInterval interval in possiblePresentIntervals )
             {
-                if (combo.Windowed && (interval == PresentInterval.Two ||
-                    interval == PresentInterval.Three || interval == PresentInterval.Four))
+                if( combo.Windowed && ( interval == PresentInterval.Two ||
+                    interval == PresentInterval.Three || interval == PresentInterval.Four ) )
                     continue;
 
-                if (interval == PresentInterval.Default ||
-                    (combo.DeviceInfo.Capabilities.PresentationIntervals & interval) != 0)
-                    combo.PresentIntervals.Add(interval);
+                if( interval == PresentInterval.Default ||
+                    ( combo.DeviceInfo.Capabilities.PresentationIntervals & interval ) != 0 )
+                    combo.PresentIntervals.Add( interval );
             }
         }
     }
