@@ -857,6 +857,7 @@ namespace DTXManiaNXa
         protected CChip rNextBassChip;
         protected CTexture txWailingFrame;
         protected CTexture txChip;  // txチップ
+        protected CTexture txLongChipEffect;
         protected CTexture txHitBar;  // txヒットバー
         protected CTexture txPlaySpeed;
         public CTexture tx判定画像anime;     //2013.8.2 kairera0467 アニメーションの場合はあらかじめこっちで読み込む。
@@ -4256,29 +4257,51 @@ namespace DTXManiaNXa
                                 {
                                     if(inst == EInstrumentPart.GUITAR || inst == EInstrumentPart.BASS)
                                     {
-                                        int num8 = nChipXPos[i];
-                                        Rectangle rect1 = rChipTxRectArray[i];
+                                        int chipX = nChipXPos[i];
+                                        Rectangle chipRect = rChipTxRectArray[i];
                                         //this.txChip.tDraw2D(CDTXMania.app.Device, num8, y - chipHeight / 2, rect1);
                                         this.txChip.vcScaleRatio.Y = 1f;
                                         if (!pChip.bHit)
                                         {
                                             this.txChip.nTransparency = pChip.nTransparency;
-                                            this.txChip.tDraw2D(CDTXMania.app.Device, num8, y - chipHeight / 2, rect1);
+                                            this.txChip.tDraw2D(CDTXMania.app.Device, chipX, y - chipHeight / 2, chipRect);
                                         }
                                         if (pChip.bロングノートである)
                                         {
-                                            //_ = (bool)CDTXMania.Instance.ConfigIni.bReverse[inst];
-                                            Rectangle rectangle2 = rect1;
-                                            rectangle2.Y += 3;
-                                            rectangle2.Height = 5;
+                                            bool bReverse = CDTXMania.ConfigIni.bReverse[ (int) inst ];
+                                            Rectangle longChipSrcRect = chipRect;
+                                            longChipSrcRect.Y += 3;
+                                            longChipSrcRect.Height = 5;
                                             this.txChip.nTransparency = 128;
                                             if (pChip.bHit && !pChip.bロングノートHit中)                                            
                                             {
                                                 CTexture obj = txChip;
                                                 obj.nTransparency = obj.nTransparency / 2;
                                             }
-                                            this.txChip.vcScaleRatio.Y = 1f * (float)num3 / (float)rectangle2.Height;
-                                            this.txChip.tDraw2D(CDTXMania.app.Device, num8, y - (CDTXMania.ConfigIni.bReverse[(int)inst] ? num3 : 0), rectangle2);
+                                            this.txChip.vcScaleRatio.Y = 1f * (float)num3 / (float)longChipSrcRect.Height;
+                                            this.txChip.tDraw2D(CDTXMania.app.Device, chipX, y - (bReverse ? num3 : 0), longChipSrcRect);
+                                            // draw electric discharge effect
+                                            if( this.txLongChipEffect != null && pChip.bロングノートHit中 )
+                                            {
+                                                int remainLength = num3;
+                                                while( 0 < remainLength )
+                                                {
+                                                    const int effectWidth = 54;
+                                                    var size = new Size( effectWidth, Math.Min( this.txLongChipEffect.szImageSize.Height, remainLength ) );
+                                                    var rcSrc = new Rectangle(
+                                                        x: effectWidth * ( nアニメカウンタ現在の値 % 5 ),
+                                                        y: 0,
+                                                        size.Width,
+                                                        size.Height );
+                                                    var rcDest = new Rectangle(
+                                                        x: chipX + ( longChipSrcRect.Width - size.Width ) / 2,
+                                                        y: bReverse ? y - remainLength : y + ( num3 - remainLength ),
+                                                        size.Width,
+                                                        size.Height );
+                                                    this.txLongChipEffect.tDraw2D( CDTXMania.app.Device, rcDest.X, rcDest.Y, rcSrc );
+                                                    remainLength -= size.Height;
+                                                }
+                                            }
                                         }
                                     }
                                 }

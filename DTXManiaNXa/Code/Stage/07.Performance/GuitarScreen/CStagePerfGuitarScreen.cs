@@ -108,6 +108,8 @@ namespace DTXManiaNXa
                 this.bサビ区間 = false;
 				//this.tGenerateBackgroundTexture();
 				this.txChip = CDTXMania.tGenerateTexture( CSkin.Path( @"Graphics\7_Chips_Guitar.png" ) );
+                this.txLongChipEffect = CDTXMania.tGenerateTexture( CSkin.Path( @"Graphics\7_long_chips_guitar.png" ) );
+                this.txLongChipEffect.bAdditiveBlending = true;
                 this.txLane = CDTXMania.tGenerateTexture( CSkin.Path( @"Graphics\7_lanes_Guitar.png") );
                 this.txHitBar = CDTXMania.tGenerateTexture(CSkin.Path(@"Graphics\\ScreenPlayDrums hit-bar.png"));
 				//this.txWailingFrame = CDTXMania.tGenerateTexture( CSkin.Path( @"Graphics\ScreenPlay wailing cursor.png" ) );
@@ -120,6 +122,7 @@ namespace DTXManiaNXa
 			{
 				//CDTXMania.tReleaseTexture( ref this.txBackground );
 				CDTXMania.tReleaseTexture( ref this.txChip );
+                CDTXMania.tReleaseTexture( ref this.txLongChipEffect );
                 CDTXMania.tReleaseTexture( ref this.txLane );
 				CDTXMania.tReleaseTexture( ref this.txHitBar );
 				//CDTXMania.tReleaseTexture( ref this.txWailingFrame );
