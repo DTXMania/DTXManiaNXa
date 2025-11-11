@@ -16,8 +16,8 @@ namespace DTXManiaNXa
     internal class CDTXMania : Game
     {
         // プロパティ
-        public static readonly string VERSION_DISPLAY = "DTX:NXA:A:A:2025110800";
-        public static readonly string VERSION = "v1.0.0 [NX 1.4.2 compatible]";
+        public static readonly string VERSION_DISPLAY = "DTX:NXA:A:A:2025111100";
+        public static readonly string VERSION = "v1.1.0 [NX 1.4.2 compatible]";
         public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
         //public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
