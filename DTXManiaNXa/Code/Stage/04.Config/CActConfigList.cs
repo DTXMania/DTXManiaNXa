@@ -2866,7 +2866,6 @@ namespace DTXManiaNXa
             //-----------------
             if( this.bFocusIsOnItemList )//&& (this.nTargetScrollCounter == 0))
             {
-                int x;
                 int y_upper;
                 int y_lower;
 
@@ -2878,13 +2877,11 @@ namespace DTXManiaNXa
 
                 if (this.bFocusIsOnElementValue)
                 {
-                    x = 552;	// 要素値の上下あたり。
                     y_upper = 0x117 - this.ctTriangleArrowAnimation.nCurrentValue;
                     y_lower = 0x17d + this.ctTriangleArrowAnimation.nCurrentValue;
                 }
                 else
                 {
-                    x = 552;	// 項目名の上下あたり。
                     y_upper = 0x129 - this.ctTriangleArrowAnimation.nCurrentValue;
                     y_lower = 0x16b + this.ctTriangleArrowAnimation.nCurrentValue;
                 }
@@ -3020,7 +3017,7 @@ namespace DTXManiaNXa
         private CItemToggle iSystemSoundMonitorGuitar;
         private CItemToggle iSystemStageFailed;
         private CItemToggle iSystemStageEffect;
-        private CItemToggle iSystemStoicMode;
+        //private CItemToggle iSystemStoicMode;
         private CItemToggle iSystemVSyncWait;
         private CItemList iSystemShowLag;					// #25370 2011.6.3 yyagi
         private CItemList iSystemShowLagColor;
@@ -3055,7 +3052,7 @@ namespace DTXManiaNXa
         private int iSystemWASAPIBufferSizeMs_initial;
         //private int iSystemASIOBufferSizeMs_initial;
         private int iSystemASIODevice_initial;
-        private int iSystemSoundTimerType_initial;			// #33689 2014.6.17 yyagi
+        private int iSystemSoundTimerType_initial = 0;			// #33689 2014.6.17 yyagi
         private CItemInteger iSystemMasterVolume;
 
         private CItemToggle iSystemTimeStretch;             // #23664 2013.2.24 yyagi
@@ -3143,7 +3140,7 @@ namespace DTXManiaNXa
 
         private CItemThreeState iDrumsAutoPlayAll;
         private CItemToggle iDrumsBass;
-        private CItemList iDrumsComboPosition;
+        //private CItemList iDrumsComboPosition;
         private CItemToggle iDrumsCymbal;
         private CItemToggle iDrumsRide;
         private CItemToggle iDrumsFloorTom;

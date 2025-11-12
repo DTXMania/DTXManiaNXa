@@ -161,7 +161,7 @@ namespace DTXManiaNXa
 		{
 			public FDK.CDirectShow dshow;
 			private bool bDispose済み;
-			public int n番号;
+            public int n番号 = 0;
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 
@@ -4027,7 +4027,7 @@ namespace DTXManiaNXa
 						}
 						if ( buffer != null )
 						{
-							byte[] buffer2 = new MD5CryptoServiceProvider().ComputeHash( buffer );
+							byte[] buffer2 = MD5.Create().ComputeHash( buffer );
 							StringBuilder sb = new StringBuilder();
 							foreach ( byte b in buffer2 )
 							{

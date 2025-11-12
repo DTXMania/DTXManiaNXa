@@ -374,7 +374,7 @@ namespace DTXManiaNXa
             CDTXMania.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
             //lockmixer = new object();
-            queueMixerSound = new Queue<stmixer>(64);
+            queueMixerSound = new Queue<stMixer>(64);
             bIsDirectSound = (CDTXMania.SoundManager.GetCurrentSoundDeviceType() == "DirectSound");
             dbPlaySpeed = ((double)CDTXMania.ConfigIni.nPlaySpeed) / 20.0;
             bValidScore = true;
@@ -749,7 +749,7 @@ namespace DTXManiaNXa
                 }
             }
         }
-        protected struct stmixer
+        protected struct stMixer
         {
             internal bool bIsAdd;
             internal CSound csound;
@@ -838,7 +838,7 @@ namespace DTXManiaNXa
         //		protected int nLastPlayedWAVNumber.GUITAR;
         //		protected int nLastPlayedWAVNumber.BASS;
 
-        protected volatile Queue<stmixer> queueMixerSound; // #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
+        protected volatile Queue<stMixer> queueMixerSound; // #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
         protected DateTime dtLastQueueOperation; //
         protected bool bIsDirectSound; //
         protected double dbPlaySpeed;
@@ -919,7 +919,7 @@ namespace DTXManiaNXa
 
         public void AddMixer(CSound cs, bool _b演奏終了後も再生が続くチップである)
         {
-            stmixer stm = new stmixer()
+            stMixer stm = new stMixer()
             {
                 bIsAdd = true,
                 csound = cs,
@@ -930,7 +930,7 @@ namespace DTXManiaNXa
         }
         public void RemoveMixer(CSound cs)
         {
-            stmixer stm = new stmixer()
+            stMixer stm = new stMixer()
             {
                 bIsAdd = false,
                 csound = cs,
@@ -952,7 +952,7 @@ namespace DTXManiaNXa
                     for (int i = 0; i < 2 && queueMixerSound.Count > 0; i++)
                     {
                         dtLastQueueOperation = dtnow;
-                        stmixer stm = queueMixerSound.Dequeue();
+                        stMixer stm = queueMixerSound.Dequeue();
                         if (stm.bIsAdd)
                         {
                             CDTXMania.SoundManager.AddMixer(stm.csound, dbPlaySpeed, stm.b演奏終了後も再生が続くチップである);
@@ -1302,7 +1302,6 @@ namespace DTXManiaNXa
         {
             if (pChip != null)
             {
-                bool overwrite = false;
                 switch (part)
                 {
                     case EInstrumentPart.DRUMS:
@@ -1334,7 +1333,6 @@ namespace DTXManiaNXa
                                 EChannel[] ch = { EChannel.Cymbal, EChannel.RideCymbal, EChannel.LeftCymbal };
                                 pChip.nChannelNumber = ch[pChip.nChannelNumber - EChannel.SE25];
                                 index = (EChannel)(pChip.nChannelNumber - EChannel.HiHatClose);
-                                overwrite = true;
                             }
                             else
                             {
@@ -2863,33 +2861,19 @@ namespace DTXManiaNXa
             }
             #endregion
 
-            const double speed = 286;	// BPM150の時の1小節の長さ[dot]
-            //XGのHS4.5が1289。思えばBPMじゃなくて拍の長さが関係あるよね。
-
-            //double ScrollSpeedDrums = (this.actScrollSpeed.db現在の譜面スクロール速度.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedGuitar = (this.actScrollSpeed.db現在の譜面スクロール速度.Guitar + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedBass = (this.actScrollSpeed.db現在の譜面スクロール速度.Bass + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-
             CDTX dTX = CDTXMania.DTX;
             CConfigIni configIni = CDTXMania.ConfigIni;
             for (int nCurrentTopChip = this.nCurrentTopChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++)
             {
                 CChip pChip = dTX.listChip[nCurrentTopChip];
-                //Debug.WriteLine( "nCurrentTopChip=" + nCurrentTopChip + ", ch=" + pChip.nChannelNumber.ToString("x2") + ", 発音位置=" + pChip.nPlaybackPosition + ", 発声時刻ms=" + pChip.nPlaybackTimeMs );
-                //pChip.nDistanceFromBar.Drums = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedDrums);
-                //pChip.nDistanceFromBar.Guitar = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedGuitar);
-                //pChip.nDistanceFromBar.Bass = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedBass);
                 pChip.ComputeDistanceFromBar(CSoundManager.rcPerformanceTimer.nCurrentTime, this.actScrollSpeed.db現在の譜面スクロール速度);
                 if (Math.Min(Math.Min(pChip.nDistanceFromBar.Drums, pChip.nDistanceFromBar.Guitar), pChip.nDistanceFromBar.Bass) > 600)
                 {
                     break;
                 }
-                //				if ( ( ( nCurrentTopChip == this.nCurrentTopChip ) && ( pChip.nDistanceFromBar.Drums < -65 ) ) && pChip.bHit )
                 // #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
                 if ((dTX.listChip[this.nCurrentTopChip].nDistanceFromBar.Drums < -65) && dTX.listChip[this.nCurrentTopChip].bHit)
                 {
-                    //					nCurrentTopChip = ++this.nCurrentTopChip;
-
                     if (dTX.listChip[this.nCurrentTopChip].bロングノートである)
                     {
                         CChip chipロングノート終端 = dTX.listChip[this.nCurrentTopChip].chipロングノート終端;
@@ -3516,28 +3500,16 @@ namespace DTXManiaNXa
                 return true;
             }
 
-            const double speed = 286;	// BPM150の時の1小節の長さ[dot]
-            //XGのHS4.5が1289。思えばBPMじゃなくて拍の長さが関係あるよね。
-
-            //double ScrollSpeedDrums = (this.actScrollSpeed.db現在の譜面スクロール速度.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedGuitar = (this.actScrollSpeed.db現在の譜面スクロール速度.Guitar + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedBass = (this.actScrollSpeed.db現在の譜面スクロール速度.Bass + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-
             CDTX dTX = CDTXMania.DTX;
             CConfigIni configIni = CDTXMania.ConfigIni;            
             for (int nCurrentTopChip = this.nCurrentTopChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++)
             {
                 CChip pChip = dTX.listChip[nCurrentTopChip];
-                //Debug.WriteLine( "nCurrentTopChip=" + nCurrentTopChip + ", ch=" + pChip.nChannelNumber.ToString("x2") + ", 発音位置=" + pChip.nPlaybackPosition + ", 発声時刻ms=" + pChip.nPlaybackTimeMs );
-                //pChip.nDistanceFromBar.Drums = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedDrums);
-                //pChip.nDistanceFromBar.Guitar = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedGuitar);
-                //pChip.nDistanceFromBar.Bass = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedBass);
                 pChip.ComputeDistanceFromBar(CSoundManager.rcPerformanceTimer.nCurrentTime, this.actScrollSpeed.db現在の譜面スクロール速度);
                 if (Math.Min(Math.Min(pChip.nDistanceFromBar.Drums, pChip.nDistanceFromBar.Guitar), pChip.nDistanceFromBar.Bass) > 600)
                 {
                     break;
                 }
-                //				if ( ( ( nCurrentTopChip == this.nCurrentTopChip ) && ( pChip.nDistanceFromBar.Drums < -65 ) ) && pChip.bHit )
                 // #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
                 if ((dTX.listChip[this.nCurrentTopChip].nDistanceFromBar.Drums < -65) && dTX.listChip[this.nCurrentTopChip].bHit)
                 {
@@ -3633,28 +3605,16 @@ namespace DTXManiaNXa
                 return true;
             }
 
-            const double speed = 286;	// BPM150の時の1小節の長さ[dot]
-            //XGのHS4.5が1289。思えばBPMじゃなくて拍の長さが関係あるよね。
-
-            //double ScrollSpeedDrums = (this.actScrollSpeed.db現在の譜面スクロール速度.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedGuitar = (this.actScrollSpeed.db現在の譜面スクロール速度.Guitar + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-            //double ScrollSpeedBass = (this.actScrollSpeed.db現在の譜面スクロール速度.Bass + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-
             CDTX dTX = CDTXMania.DTX;
             CConfigIni configIni = CDTXMania.ConfigIni;
             for (int nCurrentTopChip = this.nCurrentTopChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++)
             {
                 CChip pChip = dTX.listChip[nCurrentTopChip];
-                //Debug.WriteLine( "nCurrentTopChip=" + nCurrentTopChip + ", ch=" + pChip.nChannelNumber.ToString("x2") + ", 発音位置=" + pChip.nPlaybackPosition + ", 発声時刻ms=" + pChip.nPlaybackTimeMs );
-                //pChip.nDistanceFromBar.Drums = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedDrums);
-                //pChip.nDistanceFromBar.Guitar = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedGuitar);
-                //pChip.nDistanceFromBar.Bass = (int)((pChip.nPlaybackTimeMs - CSoundManager.rcPerformanceTimer.nCurrentTime) * ScrollSpeedBass);
                 pChip.ComputeDistanceFromBar(CSoundManager.rcPerformanceTimer.nCurrentTime, this.actScrollSpeed.db現在の譜面スクロール速度);
                 if (Math.Min(Math.Min(pChip.nDistanceFromBar.Drums, pChip.nDistanceFromBar.Guitar), pChip.nDistanceFromBar.Bass) > 600)
                 {
                     break;
                 }
-                //				if ( ( ( nCurrentTopChip == this.nCurrentTopChip ) && ( pChip.nDistanceFromBar.Drums < -65 ) ) && pChip.bHit )
                 // #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
                 if ((dTX.listChip[this.nCurrentTopChip].nDistanceFromBar.Drums < -65) && dTX.listChip[this.nCurrentTopChip].bHit)
                 {
@@ -3850,7 +3810,6 @@ namespace DTXManiaNXa
                 bool bChipHasB = false;
                 bool bChipHasY = false;
                 bool bChipHasP = false;
-                bool bChipHasW = false;
                 bool bChipIsO = false;
                 EChannel nチャンネル番号 = pChip.nChannelNumber;
 
@@ -3886,7 +3845,6 @@ namespace DTXManiaNXa
                         bChipHasB = true;
                         break;
                     case EChannel.Guitar_Wailing:
-                        bChipHasW = true;
                         break;
                     default:
                         switch (nチャンネル番号)
@@ -3978,7 +3936,6 @@ namespace DTXManiaNXa
                                 bChipHasB = true;
                                 break;
                             case EChannel.Bass_Wailing:
-                                bChipHasW = true;
                                 break;
 
                             case EChannel.Guitar_RxBxP:
@@ -4168,7 +4125,6 @@ namespace DTXManiaNXa
 
                 #region [ chip描画 ]
                 int OPEN = (inst == EInstrumentPart.GUITAR) ? 10 : 10;
-                //if (!pChip.bHit && pChip.bVisible)
                 if ((!pChip.bHit || pChip.bロングノートである) && pChip.bVisible)
                 {
                     int yBarPos = configIni.bReverse[instIndex] ? barYReverse : barYNormal;

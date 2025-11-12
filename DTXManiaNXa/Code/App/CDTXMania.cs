@@ -1214,7 +1214,6 @@ for (int i = 0; i < 3; i++) {
                                         }
 
                                         string strInstrument = "";
-                                        string strPerfSkill = "";
                                         //STDGBVALUE<string> strCurrProgressBars;
                                         STDGBVALUE<bool> bToSaveProgressBarRecord;
                                         bToSaveProgressBarRecord.Drums = false;
@@ -1401,7 +1400,6 @@ for (int i = 0; i < 3; i++) {
                                         // これを戻すのは、リザルト集計後。
                                     }													// "case CStage.EStage.Result:"のところ。
 
-                                    double ps = 0.0;
                                     int nRank = 0;
                                     string strInstrument = "";
                                     string strPerfSkill = "";

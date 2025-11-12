@@ -137,7 +137,7 @@ namespace DTXManiaNXa
                 }
 
                 #region [ 起動中のDTXManiaがいれば、そのプロセスにコマンドラインを投げる ]
-                if (hTargetMainWindowHandle != null && strSend != null)
+                if (IntPtr.Zero != hTargetMainWindowHandle && strSend != null)
                 {
                     CSendMessage.sendmessage(hTargetMainWindowHandle, hCurrentMainWindowHandle, strSend);
                     //Trace.TraceInformation("SendToDTX2WAV: " + strSend + ", " + hTargetMainWindowHandle + ", " + hCurrentMainWindowHandle);

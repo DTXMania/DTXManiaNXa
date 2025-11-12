@@ -350,7 +350,6 @@ namespace DTXManiaNXa
             this.n前回表示したフレーム番号 = -1;
             this.bフレームを作成した = false;
             this.b再生トグル = false;
-            this.bDShowクリップを再生している = false;
             this.pBmp = IntPtr.Zero;
             this.MovieMode();
             this.nAlpha = 255 - ((int)(((float)(CDTXMania.ConfigIni.nMovieAlpha * 255)) / 10f));
@@ -654,7 +653,7 @@ namespace DTXManiaNXa
                                     //if( this.txフィルインエフェクト[ this.stFillIn[ i ].ctUpdate.nCurrentValue ] != null )
                                     //    this.txフィルインエフェクト[ this.stFillIn[ i ].ctUpdate.nCurrentValue ].tDraw2D( CDTXMania.app.Device, 0, 0 );
                                     }
-                                    catch( Exception ex )
+                                    catch
                                     {
                                     }
                                 }
@@ -854,7 +853,7 @@ namespace DTXManiaNXa
         public bool bWindowMode;
         private bool bフレームを作成した;
         private bool b再生トグル;
-        private bool bDShowクリップを再生している;
+        //private bool bDShowクリップを再生している;
         //private bool bUseMRenderer = false;
         private bool bUseCAviDS = true;//
         public float fClipアスペクト比;
@@ -883,8 +882,8 @@ namespace DTXManiaNXa
         private int n本体X;
         private int n本体Y;
         private int PositionG;
-        private long lDshowPosition;
-        private long lStopPosition;
+        //private long lDshowPosition;
+        //private long lStopPosition;
         public IntPtr pBmp;
         private int position;
         private int position2;

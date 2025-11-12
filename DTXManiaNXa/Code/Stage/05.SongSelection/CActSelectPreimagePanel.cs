@@ -66,7 +66,6 @@ namespace DTXManiaNXa
 				this.txプレビュー画像がないときの画像 = CDTXMania.tGenerateTexture( CSkin.Path( @"Graphics\5_preimage default.png" ), false );
                 this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
 				this.nAVI再生開始時刻 = -1L;
-				this.n前回描画したフレーム番号 = -1;
 				this.b動画フレームを作成した = false;
 				this.pAVIBmp = IntPtr.Zero;
 				this.tプレビュー画像_動画の変更();
@@ -156,7 +155,7 @@ namespace DTXManiaNXa
 		private CCounter ct遅延表示;
 		private CCounter ct登場アニメ用;
 		private long nAVI再生開始時刻;
-		private int n前回描画したフレーム番号;
+		//private int n前回描画したフレーム番号;
 		private int n本体X;
 		private int n本体Y;
 		private IntPtr pAVIBmp;
@@ -297,7 +296,6 @@ namespace DTXManiaNXa
 
 					this.rAVI = cAVI;
 					this.nAVI再生開始時刻 = CDTXMania.Timer.nCurrentTime;
-					this.n前回描画したフレーム番号 = -1;
 					this.b動画フレームを作成した = false;
 					this.tサーフェイスをクリアする( this.sfAVI画像 );
 					Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );

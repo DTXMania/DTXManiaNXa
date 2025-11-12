@@ -81,8 +81,6 @@ namespace DTXManiaNXa
 
 		public CActPerfCommonJudgementString()
 		{
-            int iP_A = 390;
-            int iP_B = 0x248;
 			this.st判定文字列 = new ST判定文字列[ 7 ];
 			Rectangle[] r = new Rectangle[] {
 				new Rectangle( 0, 0,    0x80, 0x2a ),		// Perfect
@@ -173,7 +171,6 @@ namespace DTXManiaNXa
 			}
 
             this.stレーンサイズ = new STレーンサイズ[15];
-                STレーンサイズ stレーンサイズ = new STレーンサイズ();
                 //                                LC          HH          SD            BD          HT           LT           FT            CY          LP             RD
                 int[,] sizeXW = new int[,] { { 290, 80 }, { 367, 46 }, { 470, 54 }, { 582, 60 }, { 528, 46 }, { 645, 46 }, { 694, 46 }, { 748, 64 }, { 419, 46 }, { 815, 80 }, { 815, 80 }, { 815, 80 }, { 815, 80 }, { 815, 80 }, { 815, 80 }, };
                 int[,] sizeXW_B = new int[,] { { 290, 80 }, { 367, 46 }, { 419, 54 }, { 534, 60 }, { 590, 46 }, { 645, 46 }, { 694, 46 }, { 748, 64 }, { 478, 46 }, { 815, 64 }, { 815, 80 }, { 507, 80 }, { 815, 80 }, { 815, 80 }, { 815, 80 }, };

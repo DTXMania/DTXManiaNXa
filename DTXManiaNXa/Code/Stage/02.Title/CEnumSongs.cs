@@ -412,9 +412,6 @@ namespace DTXManiaNXa
             // 構築が完了したら、DTXEnumerateState state を DTXEnumerateState.Done にすること。(2012.2.9)
 
             DateTime now = DateTime.Now;
-            bool bIsAvailableSongList = false;
-            bool bIsAvailableSongsDB = false;
-            bool bSucceededFastBoot = false;
             bool bReadCache = (bool) argObject;
 
             try
@@ -741,7 +738,7 @@ namespace DTXManiaNXa
         private static void SerializeSongList( CSongManager cs, string strPathSongList )
         {
             bool bSucceededSerialize = true;
-            Stream? output = null;
+            Stream output = null;
             try
             {
                 output = File.Create( strPathSongList );

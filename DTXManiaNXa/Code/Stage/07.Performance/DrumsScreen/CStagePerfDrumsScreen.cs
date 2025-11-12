@@ -426,7 +426,7 @@ namespace DTXManiaNXa
                         for (int i = 0; i < 2 && queueMixerSound.Count > 0; i++)
                         {
                             dtLastQueueOperation = dtnow;
-                            stmixer stm = queueMixerSound.Dequeue();
+                            stMixer stm = queueMixerSound.Dequeue();
                             if (stm.bIsAdd)
                             {
                                 CDTXMania.SoundManager.AddMixer(stm.csound);

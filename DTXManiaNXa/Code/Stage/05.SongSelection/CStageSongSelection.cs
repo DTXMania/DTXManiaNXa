@@ -917,8 +917,8 @@ namespace DTXManiaNXa
 		private CTexture txBPMLabel;
 		//private CDirectShow dsBackgroundVideo; // background Video
 		private CDTX.CAVI rBackgroundVideoAVI;// background Video using CAVI class
-		private long lDshowPosition;
-		private long lStopPosition;
+		//private long lDshowPosition;
+		//private long lStopPosition;
 
 		//
 		private Font ftSearchInputNotificationFont;

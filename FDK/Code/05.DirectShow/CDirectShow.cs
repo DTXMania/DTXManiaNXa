@@ -315,8 +315,6 @@ namespace FDK
 
                 // IMemoryRenderer をグラフに挿入。
 
-                AMMediaType mediaType = null;
-
                 this.memoryRendererObject = new MemoryRenderer();
                 this.memoryRenderer = (IMemoryRenderer) this.memoryRendererObject;
                 var baseFilter = (IBaseFilter) this.memoryRendererObject;
@@ -465,8 +463,6 @@ namespace FDK
         }
         public Eグラフの状態 t遷移完了まで待って状態を取得する()
         {
-            var status = Eグラフの状態.未定;
-
             if( this.MediaCtrl != null )
             {
                 FilterState fs;
@@ -890,8 +886,6 @@ namespace FDK
 
         public static void tビデオレンダラをグラフから除去する( IGraphBuilder graphBuilder )
         {
-            int hr = 0;
-
             IBaseFilter videoRenderer = null;
             IPin renderInputPin = null;
             IPin connectedOutputPin = null;

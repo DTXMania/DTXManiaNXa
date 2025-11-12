@@ -74,7 +74,7 @@ namespace FDK
 
                 //this.list入力イベント = new List<STInputEvent>( 32 );
                 this.listInputEvent.Clear();            // #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
-                int posEnter = -1;
+
                 //string d = DateTime.Now.ToString( "yyyy/MM/dd HH:mm:ss.ffff" );
 
                 if( bバッファ入力を使用する )

@@ -1357,7 +1357,6 @@ namespace DTXManiaNXa
                         #region[ さいしんばん ]
                         else if( CDTXMania.ConfigIni.nJudgeAnimeType == 2 )
                         {
-                            int num4 = 0;
                             int num5 = 0;
                             int num6 = 0;
                             if (j < 10)

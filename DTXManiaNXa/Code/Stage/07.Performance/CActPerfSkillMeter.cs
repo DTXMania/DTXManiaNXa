@@ -28,13 +28,13 @@ namespace DTXManiaNXa
 
 		private STDGBVALUE<int> nGraphBG_XPos = new STDGBVALUE<int>(); //ドラムにも座標指定があるためDGBVALUEとして扱う。
 		private int nGraphBG_YPos = 200;
-		private int DispHeight = 400;
-		private int DispWidth = 60;
-		private CCounter counterYposInImg = null;
-		private readonly int slices = 10;
+		//private int DispHeight = 400;
+		//private int DispWidth = 60;
+		//private CCounter counterYposInImg = null;
+		//private readonly int slices = 10;
         private int nGraphUsePart = 0;
-        private int[] nGraphGauge_XPos = new int[ 2 ];
-        private int nPart = 0;
+        //private int[] nGraphGauge_XPos = new int[ 2 ];
+        //private int nPart = 0;
 
         public bool bIsTrainingMode = false;
 
@@ -140,22 +140,26 @@ namespace DTXManiaNXa
                     //                       時間がなくて雑なコードになったため、後日最適化を行う。
                     if( CDTXMania.ConfigIni.bDrumsEnabled )
                     {
-                        this.nPart = 0;
+                        //this.nPart = 0;
                         this.nGraphUsePart = 0;
                     }
                     else if( CDTXMania.ConfigIni.bGuitarEnabled )
                     {
                         this.nGraphUsePart = ( CDTXMania.ConfigIni.bGraph有効.Guitar == true ) ? 1 : 2;
                         if( CDTXMania.DTX.bチップがある.Guitar )
-                            this.nPart = CDTXMania.ConfigIni.bGraph有効.Guitar ? 0 : 1;
+                        {
+                            //this.nPart = CDTXMania.ConfigIni.bGraph有効.Guitar ? 0 : 1;
+                        }
                         else if( !CDTXMania.DTX.bチップがある.Guitar && CDTXMania.ConfigIni.bGraph有効.Guitar )
                         {
-                            this.nPart = 1;
+                            //this.nPart = 1;
                             this.nGraphUsePart = 2;
                         }
 
                         if( !CDTXMania.DTX.bチップがある.Bass && CDTXMania.ConfigIni.bGraph有効.Bass )
-                            this.nPart = 0;
+                        {
+                            //this.nPart = 0;
+                        }
                     }
 
                     this.nGraphBG_XPos.Drums = (CDTXMania.ConfigIni.bSmallGraph ? 880 : 900);//850 : 870
@@ -178,12 +182,11 @@ namespace DTXManiaNXa
                         }
                     }
 
-                    this.nGraphGauge_XPos = new int[] { 3, 205 };
+                    //this.nGraphGauge_XPos = new int[] { 3, 205 };
 
 					base.bJustStartedUpdate = false;
                 }
 
-				int stYposInImg = 0;
                 int nGraphSizeOffset = (CDTXMania.ConfigIni.bSmallGraph ? -19 : 0);
 
 
@@ -266,11 +269,11 @@ namespace DTXManiaNXa
         private double dbグラフ値目標;
         private double dbグラフ値目標_表示;
         private double dbグラフ値現在;
-        private double dbグラフ値現在_表示;
+        //private double dbグラフ値現在_表示;
         public double dbGraphValue_PersonalBest;
         private int[] n現在のAutoを含まない判定数;
 
-        private CTexture txPlayerName;
+        //private CTexture txPlayerName;
 		private CTexture txグラフ;
         private CTexture txグラフ_ゲージ;
         private CTexture txグラフ値自己ベストライン;

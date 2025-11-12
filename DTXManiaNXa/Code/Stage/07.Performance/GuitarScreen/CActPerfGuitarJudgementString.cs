@@ -19,7 +19,6 @@ namespace DTXManiaNXa
 		public CActPerfGuitarJudgementString()
 		{
 			this.stレーンサイズ = new STレーンサイズ[ 15 ];
-			STレーンサイズ stレーンサイズ = new STレーンサイズ();
             int[,] sizeXW = new int[,] 	{{30, 36},{71, 30},
 		
 		{
@@ -1445,7 +1444,6 @@ namespace DTXManiaNXa
                         #region[ さいしんばん ]
                         else if (CDTXMania.ConfigIni.nJudgeAnimeType == 2)
                         {
-                            int num4 = 0;
                             int num5 = 0;
                             int num6 = 0;
 							if( j == 14 )

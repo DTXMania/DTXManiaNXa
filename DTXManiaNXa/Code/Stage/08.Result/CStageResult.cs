@@ -845,8 +845,8 @@ namespace DTXManiaNXa
 		public STDGBVALUE<CStagePerfCommonScreen.CLAGTIMINGHITCOUNT> nTimingHitCount;
 
 		//private CDirectShow ds背景動画;
-		private long lDshowPosition;
-        private long lStopPosition;
+		//private long lDshowPosition;
+        //private long lStopPosition;
 
 		private readonly CActSelectBackgroundAVI actBackgroundVideoAVI;
 		private CDTX.CAVI rBackgroundVideoAVI;

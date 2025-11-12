@@ -69,7 +69,7 @@ namespace FDK
             //BASSThreadedMixerLibraryDLLHandle = dlopen(FILENAME_DLL_BASS_THREADED_MIXER_LIBRARY, RTLD_NOW);
             //#endif
 
-            if( null != BASSThreadedMixerLibraryDLLHandle )
+            if( IntPtr.Zero != BASSThreadedMixerLibraryDLLHandle )
             {
                 throw new Exception( "BASSThreadedMixer.dllの組み込みに失敗しました。" );
 
@@ -99,7 +99,7 @@ namespace FDK
 
         public static bool FreeBASSThreadedMixerLibrary()
         {
-            if( null != BASSThreadedMixerLibraryDLLHandle )
+            if( IntPtr.Zero != BASSThreadedMixerLibraryDLLHandle )
             {
                 //# ifdef _WIN32
                 FreeLibrary( BASSThreadedMixerLibraryDLLHandle );

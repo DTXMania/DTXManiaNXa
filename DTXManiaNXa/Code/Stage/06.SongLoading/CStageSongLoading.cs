@@ -459,9 +459,6 @@ namespace DTXManiaNXa
                 Trace.TraceError( ex.StackTrace );
             }
 
-
-            int y = 184;
-
             if( this.txJacket != null )
             {  
                 Matrix mat = Matrix.Identity;
@@ -570,15 +567,22 @@ namespace DTXManiaNXa
             switch (base.ePhaseID)
             {
                 case CStage.EPhase.Common_FadeIn:
+                {
+                    #region [ フェードイン → 省略 ]
+                    //-----------------------------
                     //if( this.actFI.OnUpdateAndDraw() != 0 )					// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
                     // 必ず一度「CStaeg.EPhase.Common_FadeIn」フェーズを経由させること。
                     // さもないと、曲読み込みが完了するまで、曲読み込み画面が描画されない。
                     base.ePhaseID = CStage.EPhase.NOWLOADING_DTX_FILE_READING;
-                    return (int)ESongLoadingScreenReturnValue.Continue;
-
+                    return (int) ESongLoadingScreenReturnValue.Continue;
+                    //-----------------------------
+                    #endregion
+                }
                 case CStage.EPhase.NOWLOADING_DTX_FILE_READING:
-                    {
-                        timeBeginLoad = DateTime.Now;
+                {
+                    #region [ DTXファイル読み込み ]
+                    //-----------------------------
+                    timeBeginLoad = DateTime.Now;
                         TimeSpan span;
                         str = null;
                         if (!CDTXMania.bCompactMode)
@@ -598,7 +602,7 @@ namespace DTXManiaNXa
                         Trace.TraceInformation("FILE: {0}", CDTXMania.DTX.strファイル名の絶対パス);
                         Trace.TraceInformation("---------------------------");
 
-                       // #35411 2015.08.19 chnmr0 add ゴースト機能のためList chip 読み込み後楽器パート出現順インデックスを割り振る
+                        // #35411 2015.08.19 chnmr0 add ゴースト機能のためList chip 読み込み後楽器パート出現順インデックスを割り振る
                         int[] curCount = new int[(int)EInstrumentPart.UNKNOWN];
                         for (int i = 0; i < curCount.Length; ++i)
                         {
@@ -631,7 +635,7 @@ namespace DTXManiaNXa
                         for( int i = 0; i < 3; i++ )
                         {
                             int nNowCombo = 0;
-                            int nMaxCombo = 0;
+                            //int nMaxCombo = 0;
 
                             //2016.06.18 kairera0467 「.ghost.score」ファイルが無かった場合ghostファイルから逆算を行う形に変更。
                             string[] prefix = { "none", "perfect", "lastplay", "hiskill", "hiscore", "online" };
@@ -719,100 +723,116 @@ namespace DTXManiaNXa
                         base.ePhaseID = CStage.EPhase.NOWLOADING_WAV_FILE_READING;
                         timeBeginLoadWAV = DateTime.Now;
                         return (int)ESongLoadingScreenReturnValue.Continue;
-                    }
-
+                        //-----------------------------
+                        #endregion
+                }
                 case CStage.EPhase.NOWLOADING_WAV_FILE_READING:
+                {
+                    #region [ WAVファイル読み込み ]
+                    //-----------------------------
+                    if( nWAVcount == 1 && CDTXMania.DTX.listWAV.Count > 0)			// #28934 2012.7.7 yyagi (added checking Count)
                     {
-                        if (nWAVcount == 1 && CDTXMania.DTX.listWAV.Count > 0)			// #28934 2012.7.7 yyagi (added checking Count)
-                        {
-                            //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
-                        }
-                        int looptime = (CDTXMania.ConfigIni.bVerticalSyncWait) ? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
-                        for (int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++)
-                        {
-                            if (CDTXMania.DTX.listWAV[nWAVcount].listこのWAVを使用するチャンネル番号の集合.Count > 0)	// #28674 2012.5.8 yyagi
-                            {
-                                CDTXMania.DTX.tLoadWAV(CDTXMania.DTX.listWAV[nWAVcount]);
-                            }
-                            nWAVcount++;
-                        }
-                        if (nWAVcount <= CDTXMania.DTX.listWAV.Count)
-                        {
-                            //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
-                        }
-                        if (nWAVcount > CDTXMania.DTX.listWAV.Count)
-                        {
-                            TimeSpan span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
-                            Trace.TraceInformation("WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString());
-                            timeBeginLoadWAV = DateTime.Now;
-
-                            if (CDTXMania.ConfigIni.bDynamicBassMixerManagement)
-                            {
-                                CDTXMania.DTX.PlanToAddMixerChannel();
-                            }
-                            CDTXMania.DTX.t旧仕様のドコドコチップを振り分ける(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.bAssignToLBD.Drums);
-                            CDTXMania.DTX.tドコドコ仕様変更(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eDkdkType.Drums);
-                            CDTXMania.DTX.tドラムのランダム化(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eRandom.Drums);
-                            CDTXMania.DTX.tRandomizeDrumPedal(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eRandomPedal.Drums);
-                            CDTXMania.DTX.t譜面仕様変更(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eNumOfLanes.Drums);
-                            CDTXMania.DTX.tRandomizeGuitarAndBass(EInstrumentPart.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar);
-                            CDTXMania.DTX.tRandomizeGuitarAndBass(EInstrumentPart.BASS, CDTXMania.ConfigIni.eRandom.Bass);
-
-                            if (CDTXMania.ConfigIni.bGuitarRevolutionMode)
-                                CDTXMania.stagePerfGuitarScreen.OnActivate();
-                            else
-                                CDTXMania.stagePerfDrumsScreen.OnActivate();
-
-                            span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
-                            Trace.TraceInformation("WAV/譜面後処理時間({0,4}):  {1}", (CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count), span.ToString());
-
-                            base.ePhaseID = CStage.EPhase.NOWLOADING_BMP_FILE_READING;
-                        }
-                        return (int)ESongLoadingScreenReturnValue.Continue;
+                        //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
                     }
+                    int looptime = (CDTXMania.ConfigIni.bVerticalSyncWait) ? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
+                    for (int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++)
+                    {
+                        if (CDTXMania.DTX.listWAV[nWAVcount].listこのWAVを使用するチャンネル番号の集合.Count > 0)	// #28674 2012.5.8 yyagi
+                        {
+                            CDTXMania.DTX.tLoadWAV(CDTXMania.DTX.listWAV[nWAVcount]);
+                        }
+                        nWAVcount++;
+                    }
+                    if (nWAVcount <= CDTXMania.DTX.listWAV.Count)
+                    {
+                        //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
+                    }
+                    if (nWAVcount > CDTXMania.DTX.listWAV.Count)
+                    {
+                        TimeSpan span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
+                        Trace.TraceInformation("WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString());
+                        timeBeginLoadWAV = DateTime.Now;
 
+                        if (CDTXMania.ConfigIni.bDynamicBassMixerManagement)
+                        {
+                            CDTXMania.DTX.PlanToAddMixerChannel();
+                        }
+                        CDTXMania.DTX.t旧仕様のドコドコチップを振り分ける(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.bAssignToLBD.Drums);
+                        CDTXMania.DTX.tドコドコ仕様変更(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eDkdkType.Drums);
+                        CDTXMania.DTX.tドラムのランダム化(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eRandom.Drums);
+                        CDTXMania.DTX.tRandomizeDrumPedal(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eRandomPedal.Drums);
+                        CDTXMania.DTX.t譜面仕様変更(EInstrumentPart.DRUMS, CDTXMania.ConfigIni.eNumOfLanes.Drums);
+                        CDTXMania.DTX.tRandomizeGuitarAndBass(EInstrumentPart.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar);
+                        CDTXMania.DTX.tRandomizeGuitarAndBass(EInstrumentPart.BASS, CDTXMania.ConfigIni.eRandom.Bass);
+
+                        if (CDTXMania.ConfigIni.bGuitarRevolutionMode)
+                            CDTXMania.stagePerfGuitarScreen.OnActivate();
+                        else
+                            CDTXMania.stagePerfDrumsScreen.OnActivate();
+
+                        span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
+                        Trace.TraceInformation("WAV/譜面後処理時間({0,4}):  {1}", (CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count), span.ToString());
+
+                        base.ePhaseID = CStage.EPhase.NOWLOADING_BMP_FILE_READING;
+                    }
+                    return (int)ESongLoadingScreenReturnValue.Continue;
+                    //-----------------------------
+                    #endregion
+                }
                 case CStage.EPhase.NOWLOADING_BMP_FILE_READING:
-                    {
-                        TimeSpan span;
-                        DateTime timeBeginLoadBMPAVI = DateTime.Now;
-                        if (CDTXMania.ConfigIni.bBGAEnabled)
-                            CDTXMania.DTX.tLoadBMP_BMPTEX();
+                {
+                    #region [ BMP/AVIファイル読み込み ]
+                    //-----------------------------
+                    TimeSpan span;
+                    DateTime timeBeginLoadBMPAVI = DateTime.Now;
+                    if (CDTXMania.ConfigIni.bBGAEnabled)
+                        CDTXMania.DTX.tLoadBMP_BMPTEX();
 
-                        if (CDTXMania.ConfigIni.bAVIEnabled)
-                            CDTXMania.DTX.tLoadAVI();
-                        span = (TimeSpan)(DateTime.Now - timeBeginLoadBMPAVI);
-                        Trace.TraceInformation("BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count), span.ToString());
+                    if (CDTXMania.ConfigIni.bAVIEnabled)
+                        CDTXMania.DTX.tLoadAVI();
+                    span = (TimeSpan)(DateTime.Now - timeBeginLoadBMPAVI);
+                    Trace.TraceInformation("BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count), span.ToString());
 
-                        span = (TimeSpan)(DateTime.Now - timeBeginLoad);
-                        Trace.TraceInformation("総読込時間:                {0}", span.ToString());
-                        CDTXMania.Timer.tUpdate();
-                        base.ePhaseID = CStage.EPhase.NOWLOADING_WAIT_BGM_SOUND_COMPLETION;
-                        return (int)ESongLoadingScreenReturnValue.Continue;
-                    }
-
+                    span = (TimeSpan)(DateTime.Now - timeBeginLoad);
+                    Trace.TraceInformation("総読込時間:                {0}", span.ToString());
+                    CDTXMania.Timer.tUpdate();
+                    base.ePhaseID = CStage.EPhase.NOWLOADING_WAIT_BGM_SOUND_COMPLETION;
+                    return (int)ESongLoadingScreenReturnValue.Continue;
+                    //-----------------------------
+                    #endregion
+                }
                 case CStage.EPhase.NOWLOADING_WAIT_BGM_SOUND_COMPLETION:
+                {
+                    #region [ BGMの再生完了待ち ]
+                    //-----------------------------
+                    long nCurrentTime = CDTXMania.Timer.nCurrentTime;
+                    if (nCurrentTime < this.nBGMPlayStartTime)
+                        this.nBGMPlayStartTime = nCurrentTime;
+
+                    // if ( ( nCurrentTime - this.nBGMPlayStartTime ) > ( this.nBGMTotalPlayTimeMs - 1000 ) )
+                    if ((nCurrentTime - this.nBGMPlayStartTime) > (this.nBGMTotalPlayTimeMs))	// #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
                     {
-                        long nCurrentTime = CDTXMania.Timer.nCurrentTime;
-                        if (nCurrentTime < this.nBGMPlayStartTime)
-                            this.nBGMPlayStartTime = nCurrentTime;
-
-                        //						if ( ( nCurrentTime - this.nBGMPlayStartTime ) > ( this.nBGMTotalPlayTimeMs - 1000 ) )
-                        if ((nCurrentTime - this.nBGMPlayStartTime) > (this.nBGMTotalPlayTimeMs))	// #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
-                        {
-                            this.actFO.tStartFadeOut();
-                            base.ePhaseID = CStage.EPhase.Common_FadeOut;
-                        }
-                        return (int)ESongLoadingScreenReturnValue.Continue;
+                        this.actFO.tStartFadeOut();
+                        base.ePhaseID = CStage.EPhase.Common_FadeOut;
                     }
-
+                    return (int)ESongLoadingScreenReturnValue.Continue;
+                    //-----------------------------
+                    #endregion
+                }
                 case CStage.EPhase.Common_FadeOut:
+                {
+                    #region [ フェードアウト ]
+                    //-----------------------------
                     //if (this.actFO.OnUpdateAndDraw() == 0)
                     //return 0;
-                    if (this.sdLoadingSound != null)
+                    if( this.sdLoadingSound != null )
                     {
                         this.sdLoadingSound.tRelease();
                     }
-                    return (int)ESongLoadingScreenReturnValue.LoadingComplete;
+                    return (int) ESongLoadingScreenReturnValue.LoadingComplete;
+                    //-----------------------------
+                    #endregion
+                }
             }
             return (int)ESongLoadingScreenReturnValue.Continue;
         }
@@ -1077,15 +1097,8 @@ namespace DTXManiaNXa
                 {
                     if (this.st大文字位置[j].ch == c)
                     {
-                        int num;
-                        int num2;
-                        num = 0;
-                        num2 = 0;
                         Rectangle rc画像内の描画領域 = new Rectangle(this.st大文字位置[j].pt.X, this.st大文字位置[j].pt.Y, 100, 130);
-                        if (this.txLevel != null)
-                        {
-                            this.txLevel.tDraw2D(CDTXMania.app.Device, x, y, rc画像内の描画領域);
-                        }
+                        this.txLevel?.tDraw2D(CDTXMania.app.Device, x, y, rc画像内の描画領域);
                         break;
                     }
                 }

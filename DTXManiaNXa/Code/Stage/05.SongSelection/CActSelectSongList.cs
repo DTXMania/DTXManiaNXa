@@ -507,7 +507,6 @@ namespace DTXManiaNXa
 			if( this.bActivated )
 				return;
 
-			this.eInstrumentPart = EInstrumentPart.DRUMS;
 			this.bAllAnimationsCompleted = false;
 			this.nTargetScrollCounter = 0;
 			this.nCurrentScrollCounter = 0;
@@ -1325,7 +1324,7 @@ namespace DTXManiaNXa
 		private bool bAllAnimationsCompleted;  // b登場アニメ全部完了
 		private Color color文字影 = Color.FromArgb( 0x40, 10, 10, 10 );
 		private CCounter[] ct登場アニメ用 = new CCounter[ 13 ];
-		private EInstrumentPart eInstrumentPart;  // e楽器パート
+		//private EInstrumentPart eInstrumentPart;  // e楽器パート
 		private Font ftSongListFont;           // ft曲リスト用フォント
 		private long nScrollTimer;             // nスクロールタイマ
 		private int nCurrentScrollCounter;

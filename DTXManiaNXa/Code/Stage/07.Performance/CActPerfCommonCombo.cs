@@ -269,8 +269,6 @@ namespace DTXManiaNXa
 
             #region [ n位の数[] を、"COMBO" → 1の位 → 10の位 … の順に、右から左へ向かって順番に表示する。]
             //-----------------
-            const int n1桁ごとのジャンプの遅れ = 10;	// 1桁につき 50 インデックス遅れる
-
             int n数字とCOMBOを合わせた画像の全長px = ((nドラムコンボの幅) * n桁数);
             int x = nX中央位置px;
             int y = (nY上辺位置px + nドラムコンボの高さ) - nドラムコンボのCOMBO文字の高さ;
@@ -429,7 +427,6 @@ namespace DTXManiaNXa
             int y = nコンボy;
             int n全桁の合計幅 = nギターコンボの幅 * n桁数;
             int nJump = nジャンプインデックス - (n桁数);
-            int y動作差分 = 0;
 
             this.ctAnimation.tUpdate();
             //CDTXMania.act文字コンソール.tPrint(1200, 0, CCharacterConsole.Eフォント種別.白, this.ctコンボアニメ.nCurrentValue.ToString());
@@ -531,7 +528,6 @@ namespace DTXManiaNXa
             int y = nコンボy;
             int n全桁の合計幅 = nギターコンボの幅 * n桁数;
             int nJump = nジャンプインデックス - (n桁数);
-            int y動作差分 = 0;
 
             this.ctComboAnimation_2P.tUpdate();
             //CDTXMania.act文字コンソール.tPrint(1200, 0, CCharacterConsole.Eフォント種別.白, this.ctコンボアニメ.nCurrentValue.ToString());

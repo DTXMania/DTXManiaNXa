@@ -17,12 +17,12 @@ namespace DTXManiaNXa
 
 		public void tStartFadeOut()
 		{
-			this.mode = EFIFOMode.FadeOut;
+			//this.mode = EFIFOMode.FadeOut;
 			this.counter = new CCounter( 0, 400, 5, CDTXMania.Timer );
 		}
 		public void tフェードイン開始()
 		{
-			this.mode = EFIFOMode.FadeIn;
+			//this.mode = EFIFOMode.FadeIn;
 			this.counter = new CCounter( 0, 400, 5, CDTXMania.Timer );
 		}
 		public void tフェードイン完了()		// #25406 2011.6.9 yyagi
@@ -156,7 +156,7 @@ namespace DTXManiaNXa
 		#region [ private ]
 		//-----------------
 		public CCounter counter;
-		private EFIFOMode mode;
+		//private EFIFOMode mode;
 		private CTexture tx白タイル64x64;
         private CTexture txFullCombo;
         private CTexture txExcellent;

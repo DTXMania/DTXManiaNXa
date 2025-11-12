@@ -573,7 +573,7 @@ namespace DTXManiaNXa
 			stream.Close();
 			StringBuilder builder = new StringBuilder(0x21);
 			{
-				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
+                var m = MD5.Create();
 				byte[] buffer2 = m.ComputeHash(buffer);
 				foreach (byte num in buffer2)
 					builder.Append(num.ToString("x2"));
@@ -2002,7 +2002,7 @@ namespace DTXManiaNXa
 			byte[] bytes = Encoding.GetEncoding( "shift-jis" ).GetBytes( builder.ToString() );  // バッシュの作成に使うだけなのでShift_JISのままとしておく
             StringBuilder builder2 = new StringBuilder(0x21);
 			{
-				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
+                var m = MD5.Create();
 				byte[] buffer2 = m.ComputeHash(bytes);
 				foreach (byte num2 in buffer2)
 					builder2.Append(num2.ToString("x2"));

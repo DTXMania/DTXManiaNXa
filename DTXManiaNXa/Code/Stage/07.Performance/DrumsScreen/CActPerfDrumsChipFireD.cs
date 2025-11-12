@@ -352,7 +352,6 @@ namespace DTXManiaNXa
 				this.st細波[ i ].b使用中 = false;
 				this.st細波[ i ].ct進行 = new CCounter();
 			}
-            int iPosY = 0x177;
 			base.OnActivate();
 		}
 		public override void OnDeactivate()
