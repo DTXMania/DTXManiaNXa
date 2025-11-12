@@ -6,7 +6,7 @@ DTXManiaNXa は、[DTXManiaNX](https://github.com/limyz/DTXmaniaNX) から派生し、い
 
 ||DTXManiaNX|DTXManiaNXa|
 |---|---|---|
-|フレームワーク|.NET Framework 4.7.1|.NET 9 (Win7 API)|
+|フレームワーク|.NET Framework 4.7.1|.NET 10 (Win7 API)|
 |DTXファイル|Shift-JIS|Shift-JIS or UTF-8|
 |配布|exe|zip|
 |DTX2WAV|対応|未対応
