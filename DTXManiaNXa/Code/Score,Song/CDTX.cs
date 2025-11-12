@@ -2988,114 +2988,46 @@ namespace DTXManiaNXa
 		}
 		public void tLoadWAV( CWAV cwav )
 		{
-//			Trace.TraceInformation("WAV files={0}", this.listWAV.Count);
-//			int count = 0;
-//			foreach (CWAV cwav in this.listWAV.Values)
 			{
-//				string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
-//				Debug.WriteLine(strCount);
-//				CDTXMania.act文字コンソール.tPrint(0, 0, CCharacterConsole.Eフォント種別.白, strCount);
-//				count++;
-
 				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strFolderName : this.PATH_WAV;
 				str = str + this.PATH + cwav.strファイル名;
 				bool bIsDirectSound = ( CDTXMania.SoundManager.GetCurrentSoundDeviceType() == "DirectSound" );
 				try
 				{
-					//try
-					//{
-					//    cwav.rSound[ 0 ] = CDTXMania.SoundManager.tGenerateSound( str );
-					//    cwav.rSound[ 0 ].nVolume = 100;
-					//    if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-					//    {
-					//        Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
-					//    }
-					//}
-					//catch
-					//{
-					//    cwav.rSound[ 0 ] = null;
-					//    Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-					//}
-					//if ( cwav.rSound[ 0 ] == null )	// #xxxxx 2012.5.3 yyagi rSound[1-3]もClone()するようにし、これらのストリーム再生がおかしくなる問題を修正
-					//{
-					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
-					//    {
-					//        cwav.rSound[ j ] = null;
-					//    }
-					//}
-					//else
-					//{
-					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
-					//    {
-					//        cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        CDTXMania.SoundManager.tサウンドを登録する( cwav.rSound[ j ] );
-					//    }
-					//}
+                    #region [ 同時発音数を、チャンネルによって変える ]
+                    //--------------
+                    int nPoly = nPolyphonicSounds;
+                    if( CDTXMania.SoundManager.GetCurrentSoundDeviceType() != "DirectSound" )   // DShowでの再生の場合はミキシング負荷が高くないため、
+                    {                                                                       // チップのライフタイム管理を行わない
+                        if( cwav.bIsBassSound ) nPoly = ( nPolyphonicSounds >= 2 ) ? 2 : 1;
+                        else if( cwav.bIsGuitarSound ) nPoly = ( nPolyphonicSounds >= 2 ) ? 2 : 1;
+                        else if( cwav.bIsSESound ) nPoly = 1;
+                        else if( cwav.bIsBGMSound ) nPoly = 1;
+                    }
+                    if( cwav.bIsBGMSound ) nPoly = 1;
+                    //--------------
+                    #endregion
 
-					// まず1つめを登録する
-					try
-					{
-						cwav.rSound[ 0 ] = CDTXMania.SoundManager.tGenerateSound( str );
-						cwav.rSound[ 0 ].nVolume = 100;
-						if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
-						}
-					}
-					catch ( Exception e )
-					{
-						cwav.rSound[ 0 ] = null;
-						Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-						Trace.TraceError( "例外: " + e.Message );
-					}
+                    for( int i = 0; i < nPoly; i++ )
+                    {
+                        try
+                        {
+                            cwav.rSound[ i ] = CDTXMania.SoundManager.tGenerateSound( str );
+                            cwav.rSound[ i ].nVolume = 100;
+                        }
+                        catch( Exception e )
+                        {
+                            cwav.rSound[ i ] = null;
+                            Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+                            Trace.TraceError( "例外: " + e.Message );
+                        }
 
-					#region [ 同時発音数を、チャンネルによって変える ]
-					int nPoly = nPolyphonicSounds;
-					if ( CDTXMania.SoundManager.GetCurrentSoundDeviceType() != "DirectSound" )	// DShowでの再生の場合はミキシング負荷が高くないため、
-					{																		// チップのライフタイム管理を行わない
-						if      ( cwav.bIsBassSound )   nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
-						else if ( cwav.bIsGuitarSound ) nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
-						else if ( cwav.bIsSESound )     nPoly = 1;
-						else if ( cwav.bIsBGMSound)     nPoly = 1;
-					}
-					if ( cwav.bIsBGMSound ) nPoly = 1;
-					#endregion
-
-					// 残りはClone等で登録する
-					//if ( bIsDirectSound )	// DShowでの再生の場合はCloneする
-					//{
-					//    for ( int i = 1; i < nPoly; i++ )
-					//    {
-					//        cwav.rSound[ i ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        // CDTXMania.SoundManager.tサウンドを登録する( cwav.rSound[ j ] );
-					//    }
-					//    for ( int i = nPoly; i < nPolyphonicSounds; i++ )
-					//    {
-					//        cwav.rSound[ i ] = null;
-					//    }
-					//}
-					//else															// WASAPI/ASIO時は通常通り登録
-					{
-						for ( int i = 1; i < nPoly; i++ )
-						{
-							try
-							{
-								cwav.rSound[ i ] = CDTXMania.SoundManager.tGenerateSound( str );
-								cwav.rSound[ i ].nVolume = 100;
-								if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-								{
-									Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
-								}
-							}
-							catch ( Exception e )
-							{
-								cwav.rSound[ i ] = null;
-								Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-								Trace.TraceError( "例外: " + e.Message );
-							}
-						}
-					}
-				}
+                        if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+                        {
+                            Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
+                        }
+                    }
+                }
 				catch( Exception exception )
 				{
 					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str );
@@ -3103,7 +3035,6 @@ namespace DTXManiaNXa
 					{
 						cwav.rSound[ j ] = null;
 					}
-					//continue;
 				}
 			}
 		}

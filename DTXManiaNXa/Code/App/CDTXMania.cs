@@ -2540,12 +2540,13 @@ for (int i = 0; i < 3; i++) {
         }
         public void AddSoundTypeToWindowTitle()
         {
+            string deviceType = SoundManager.GetCurrentSoundDeviceType();
             string delay = "";
-            if (SoundManager.GetCurrentSoundDeviceType() != "DirectSound")
+            if (deviceType != "DirectSound")
             {
                 delay = "(" + SoundManager.GetSoundDelay() + "ms)";
             }
-            base.Window.Text = strWindowTitle + " (" + SoundManager.GetCurrentSoundDeviceType() + delay + ")";
+            base.Window.Text = strWindowTitle + " (" + deviceType + delay + ")";
         }
 
         private void tTerminate()  // t終了処理

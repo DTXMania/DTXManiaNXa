@@ -296,7 +296,7 @@ namespace FDK
         //Retry:
             var flags = ( mode == Eデバイスモード.排他 ) ?
                 WasapiInitFlags.AutoFormat | WasapiInitFlags.Exclusive :
-                WasapiInitFlags.AutoFormat | WasapiInitFlags.Shared;  // 注: BASS_WASAPI_SHARED==0 なので、SHAREDの指定は意味なし
+                WasapiInitFlags.AutoFormat | WasapiInitFlags.Shared;
             if( COS.bIsWin7OrLater() && CSoundManager.bSoundUpdateByEventWASAPI )
             {
                 flags |= WasapiInitFlags.EventDriven;  // Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
@@ -362,7 +362,9 @@ namespace FDK
 
             Trace.TraceInformation( "Start Bass_Wasapi_Init(device=" + nDevNo + ", freq=" + n周波数 + ", nchans=" + nチャンネル数 + ", flags=" + flags + "," +
                 " buffer=" + f希望バッファサイズsec + ", period=" + f更新間隔sec + ")" );
-            if( BassWasapi.Init( nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero ) )
+
+            //if( BassWasapi.Init( nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero ) )
+            if( BassWasapi.Init( nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, 0.0f, this.tWasapiProc, IntPtr.Zero ) )
             {
                 if( mode == Eデバイスモード.排他 )
                 {
