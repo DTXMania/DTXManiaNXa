@@ -720,34 +720,53 @@ namespace DTXManiaNXa
                         else
                             CDTXMania.DTX.MIDIレベル = (CDTXMania.stageSongSelection.rConfirmedSong.eNodeType == CSongListNode.ENodeType.SCORE_MIDI) ? CDTXMania.stageSongSelection.nSelectedSongDifficultyLevel : 0;
 
-                        base.ePhaseID = CStage.EPhase.NOWLOADING_WAV_FILE_READING;
+                        base.ePhaseID = CStage.EPhase.NOWLOADING_WAV_FILE_READING_START;
                         timeBeginLoadWAV = DateTime.Now;
                         return (int)ESongLoadingScreenReturnValue.Continue;
                         //-----------------------------
                         #endregion
                 }
-                case CStage.EPhase.NOWLOADING_WAV_FILE_READING:
+                case CStage.EPhase.NOWLOADING_WAV_FILE_READING_START:
                 {
-                    #region [ WAVファイル読み込み ]
+                    #region [ WAVファイル読み込みスレッドの起動 ]
                     //-----------------------------
-                    if( nWAVcount == 1 && CDTXMania.DTX.listWAV.Count > 0)			// #28934 2012.7.7 yyagi (added checking Count)
+                    if( CDTXMania.DTX.listWAV.Count > 0 )         // #28934 2012.7.7 yyagi (added checking Count)
                     {
                         //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
                     }
-                    int looptime = (CDTXMania.ConfigIni.bVerticalSyncWait) ? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
-                    for (int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++)
-                    {
-                        if (CDTXMania.DTX.listWAV[nWAVcount].listこのWAVを使用するチャンネル番号の集合.Count > 0)	// #28674 2012.5.8 yyagi
+                    this.cancellationTokenSource = new CancellationTokenSource();
+                    this.reading_wav = new Thread( new ParameterizedThreadStart( ( object cancellationTokenObj ) => {
+                        var cancellationToken = (CancellationToken)cancellationTokenObj;
+
+                        for( this.nWAVcount = 1; this.nWAVcount <= CDTXMania.DTX.listWAV.Count; this.nWAVcount++ )
                         {
-                            CDTXMania.DTX.tLoadWAV(CDTXMania.DTX.listWAV[nWAVcount]);
+                            if( cancellationToken.IsCancellationRequested )
+                                break;
+
+                            if( CDTXMania.DTX.listWAV[ this.nWAVcount ].listこのWAVを使用するチャンネル番号の集合.Count > 0 ) // #28674 2012.5.8 yyagi
+                            {
+                                CDTXMania.DTX.tLoadWAV( CDTXMania.DTX.listWAV[ this.nWAVcount ] );
+                            }
                         }
-                        nWAVcount++;
-                    }
-                    if (nWAVcount <= CDTXMania.DTX.listWAV.Count)
+                    } ) );
+                    this.reading_wav.Start( cancellationTokenSource.Token );
+                    this.ePhaseID = CStage.EPhase.NOWLOADING_WAV_FILE_READING_WAIT_COMPLETION;
+                    return (int) ESongLoadingScreenReturnValue.Continue;
+                    //-----------------------------
+                    #endregion
+                }
+                case CStage.EPhase.NOWLOADING_WAV_FILE_READING_WAIT_COMPLETION:
+                {
+                    #region [ WAVファイル読み込み完了待ち ]
+                    //-----------------------------
+                    if( this.reading_wav.IsAlive )  // スレッドが終わるまでは何もしない。
+                        return (int) ESongLoadingScreenReturnValue.Continue;
+
+                    if( nWAVcount <= CDTXMania.DTX.listWAV.Count)   // 全部読み込めなかった場合
                     {
                         //ShowProgressByFilename(CDTXMania.DTX.listWAV[nWAVcount].strFilename);
                     }
-                    if (nWAVcount > CDTXMania.DTX.listWAV.Count)
+                    if (nWAVcount > CDTXMania.DTX.listWAV.Count)    // 全部読み込めた場合
                     {
                         TimeSpan span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
                         Trace.TraceInformation("WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString());
@@ -887,7 +906,7 @@ namespace DTXManiaNXa
             public float f加速度の加速度Y;
             public float f半径;
         }
-        //		private CActFIFOBlack actFI;
+        //private CActFIFOBlack actFI;
         private CActFIFOBlackStart actFO;
 
         private readonly STCharacterPosition[] st小文字位置;
@@ -905,7 +924,6 @@ namespace DTXManiaNXa
         private CTexture txBackground;
         private CTexture txDifficultyPanel;
         private CTexture txPartPanel;
-
         private CPrivateFastFont pfタイトル;
         private CPrivateFastFont pfアーティスト;
 
@@ -920,6 +938,8 @@ namespace DTXManiaNXa
         private DateTime timeBeginLoadWAV;
         private int nWAVcount;
         private CTexture txLevel;
+        private Thread reading_wav;
+        private CancellationTokenSource cancellationTokenSource;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct STATUSPANEL
@@ -962,7 +982,7 @@ namespace DTXManiaNXa
                     return STHitRanges.tCreateDefaultDTXHitRanges().tGetJudgement(nDeltaTimeMs);
             }
         }
-        //-----------------
+
         private void ReadGhost( string filename, List<int> list ) // #35411 2015.08.19 chnmr0 add
         {
             //return; //2015.12.31 kairera0467 以下封印
@@ -1171,6 +1191,7 @@ namespace DTXManiaNXa
             if( this.txDifficultyPanel != null )
                 this.txDifficultyPanel.tDraw2D( CDTXMania.app.Device, nX, nY, rect );
         }
+        //-----------------
         #endregion
     }
 }
