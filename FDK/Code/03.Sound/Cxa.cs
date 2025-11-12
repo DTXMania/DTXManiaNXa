@@ -68,7 +68,7 @@ namespace FDK
             return 0;
         }
 
-        public override int Decode( ref byte[] Dest, long offset )
+        public override long Decode( ref byte[] Dest, long offset )
         {
             #region [ Decodig xa data ]
             srcBuf = new byte[ format.Blocks * format.BlockSizeXa ];

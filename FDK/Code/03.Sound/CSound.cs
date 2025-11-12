@@ -1980,11 +1980,18 @@ namespace FDK
             buffer = new byte[ wavheadersize + totalPCMSize ];
             try
             {
-                if( sounddecoder.Decode( ref buffer, wavheadersize ) < 0 )
+                totalPCMSize = (int) sounddecoder.Decode( ref buffer, wavheadersize );
+                if( totalPCMSize <= 0 )
                 {
                     buffer = null;
                     throw new Exception( string.Format( "デコードに失敗しました。({0})", strファイル名 ) );
                 }
+
+                // ja: readBytes < totalPCMSize の場合は buffer[] を縮小する。
+                // en: If readBytes < totalPCMSize, reduce buffer[] size.
+                if( totalPCMSize < buffer.Length )
+                    Array.Resize<byte>( ref buffer, totalPCMSize );
+
                 if( bIntegrateWaveHeader )
                 {
                     // wave headerを書き込む

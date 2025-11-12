@@ -40,7 +40,7 @@ namespace FDK
             return 0;
         }
 
-        public override int Decode( ref byte[] Dest, long offset )
+        public override long Decode( ref byte[] Dest, long offset )
         {
             #region [ decode ]
             int LEN = 65536;
@@ -53,7 +53,9 @@ namespace FDK
                 if( len < 0 )
                 {
                     var be = Bass.LastError;
-                    Trace.TraceInformation( "Cmp3: BASS_ChannelGetData Error: " + be.ToString() );
+                    if( be == Errors.Ended )
+                        break;  // 想定したサイズより小さかった。
+                    Trace.TraceInformation( "Cmp3ogg: BASS_ChannelGetData Error: " + be.ToString() );
                 }
                 Array.Copy( data, 0, Dest, p, len );
                 p += len;
@@ -63,7 +65,7 @@ namespace FDK
             //SaveWav(filename, Dest);
 
             data = null;
-            return 0;
+            return p;
         }
 
         public override void Close()
